@@ -1,0 +1,5 @@
+pytest
+python-docx
+black
+python-dotenv
+azure-functions
