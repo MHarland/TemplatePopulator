@@ -5,3 +5,5 @@ venv
 .DS_Store
 PKG-INFO
 *egg-info
+*/.terraform
+*/.terraform.lock.hcl
