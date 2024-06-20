@@ -24,3 +24,4 @@ export TF_VAR_sta_name="${PROJECT_NAME}${ENV_NAME}sta"
 export TF_VAR_acr_name="${PROJECT_NAME}${ENV_NAME}acr"
 export TF_VAR_image_name="${PROJECT_NAME}${ENV_NAME}funcimg"
 export TF_VAR_image_tag="latest"
+
