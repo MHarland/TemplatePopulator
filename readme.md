@@ -29,3 +29,6 @@ cd az_func
 func start
 ```
 Request `curl http://localhost:7071/api/req`
+
+# Run container
+docker run --rm -it -p 7071:80 tpopdevacr.azurecr.io/tpopdevfuncimg:latest

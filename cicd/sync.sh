@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # This script synchronizes the platform deployment with your local code
 # and loads your environment such, that you can run the tests

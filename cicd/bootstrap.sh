@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 source ${PROJECT_ROOT}/cicd/config.sh
 sub_name="$(az account list --query "[?isDefault].name" -o tsv)"
