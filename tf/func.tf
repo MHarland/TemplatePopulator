@@ -21,7 +21,7 @@ resource "azurerm_linux_function_app" "func_app" {
   service_plan_id            = azurerm_service_plan.func_sp.id
   storage_account_name       = azurerm_storage_account.func_sta.name
   storage_account_access_key = azurerm_storage_account.func_sta.primary_access_key
-  https_only                 = true
+  https_only                 = false
 
   site_config {
     application_insights_connection_string = azurerm_application_insights.appi.connection_string

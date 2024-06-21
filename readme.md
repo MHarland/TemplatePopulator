@@ -32,3 +32,6 @@ Request `curl http://localhost:7071/api/req`
 
 # Run container
 docker run --rm -it -p 7071:80 tpopdevacr.azurecr.io/tpopdevfuncimg:latest
+
+# Azure runs
+docker run -d --expose=80 --name tpopdevapp_0_feab2ccc -e WEBSITE_USE_DIAGNOSTIC_SERVER=false -e WEBSITE_SITE_NAME=tpopdevapp -e WEBSITE_AUTH_ENABLED=False -e PORT=80 -e WEBSITE_ROLE_INSTANCE_ID=0 -e WEBSITE_HOSTNAME=tpopdevapp.azurewebsites.net -e WEBSITE_INSTANCE_ID=5e0fe6be2d0acc7128080b409166ad9fab444029edca97ce3162c99626039516 -e HTTP_LOGGING_ENABLED=1 tpopdevacr.azurecr.io/tpopdevfuncimg:latest
