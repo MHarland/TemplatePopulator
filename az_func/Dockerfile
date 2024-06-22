@@ -14,6 +14,7 @@ RUN pip install --no-cache --upgrade pip && \
     pip install --no-cache -r requirements.txt
 COPY setup.py setup.py
 COPY template_populator template_populator
+
 RUN pip install .
 
 WORKDIR /

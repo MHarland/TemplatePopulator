@@ -44,3 +44,12 @@ docker run -d --expose=80 --name tpopdevapp_0_feab2ccc -e WEBSITE_USE_DIAGNOSTIC
 ```
 curl -X GET -v -H 'x-functions-key: <key>' -H 'Content-Type: application/json' 'https://tpopdevapp.azurewebsites.net/api/healthcheck'
 ```
+
+ TODO
+https://tpopdevsta.blob.core.windows.net/templates/TestTemplate2.docx
+```
+curl -X GET -v -H 'x-functions-key: <key>' -H 'Content-Type: application/json' 'https://tpopdevapp.azurewebsites.net/api/healthcheck'
+```
+
+
+curl -X GET -v -H 'x-functions-key: tVEVF_wmRrEQOXRTmTsMHWnZp-LqhA3zek1to2Jhp8ZkAzFuJGEhgg==' -H 'Content-Type: application/json' 'https://tpopdevapp.azurewebsites.net/api/healthcheck'
