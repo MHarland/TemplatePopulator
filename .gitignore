@@ -7,3 +7,4 @@ PKG-INFO
 *egg-info
 */.terraform
 */.terraform.lock.hcl
+infrastructure.json

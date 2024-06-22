@@ -51,4 +51,6 @@ then
     fi
 fi
 
+terraform output -json > ${PROJECT_ROOT}/infrastructure.json
+
 cd ${PROJECT_ROOT}

@@ -3,3 +3,5 @@ python-docx
 black
 python-dotenv
 azure-functions
+azure-identity
+azure-storage-blob
