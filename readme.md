@@ -46,7 +46,7 @@ func start
 docker run --rm -it -p 7071:80 tpopdevacr.azurecr.io/tpopdevfuncimg:latest
 Request `curl http://localhost:7071/api/healthcheck`
 
-# Run
+# Example
 ```
 export STORAGE_ACCOUNT_NAME=<storage account name>
 
