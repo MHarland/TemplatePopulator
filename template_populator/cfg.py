@@ -1,15 +1,14 @@
 import os
 from dotenv import load_dotenv
 import json
+from uuid import uuid4
 
 load_dotenv()
 
 SOFFICE = os.getenv("SOFFICE", "soffice")
-LOCAL_WORK_DIR = os.getenv("LOCAL_WORK_DIR", os.getcwd())
-TEMP_TEMPLATE_PATH = os.path.join(LOCAL_WORK_DIR, "template_tmp.docx")
-TEMP_DOCUMENT_PATH = os.path.join(LOCAL_WORK_DIR, "document_tmp.pdf")
-TEST_DIR = os.getenv("TEST_DIR", os.path.join(os.getcwd(), "test_out"))
+WORK_DIR = os.getenv("WORK_DIR", os.getcwd())
 
+TEST_RUN_UUID = uuid4().hex
 cfg_path = os.path.dirname(os.path.abspath(__file__))
 infrastructure_path = os.path.join(cfg_path, "infrastructure.json")
 with open(infrastructure_path, "r") as f:

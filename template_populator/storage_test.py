@@ -1,71 +1,52 @@
 from .storage import Storage
 from . import cfg
 from azure.storage.blob import BlobServiceClient
-from azure.core.exceptions import ResourceExistsError
 from azure.identity import DefaultAzureCredential
 import os
 import pytest
+from uuid import uuid4
 
 
 @pytest.fixture
-def use_template():
+def test_template_path():
     credential = DefaultAzureCredential()
     blob_service_client = BlobServiceClient(
         cfg.TEST_STORAGE_ENDPOINT, credential=credential
     )
+    template_uuid = uuid4().hex
+    test_template_blob_name = f"TestTemplate_{template_uuid}_{cfg.TEST_RUN_UUID}.docx"
     blob_client = blob_service_client.get_blob_client(
-        container=cfg.TEST_STORAGE_TEMPLATE_CONTAINER, blob="TestTemplate.docx"
+        container=cfg.TEST_STORAGE_TEMPLATE_CONTAINER, blob=test_template_blob_name
     )
     with open(
         os.path.join("template_populator", "test_data", "TestTemplate.docx"), "rb"
     ) as data:
-        try:
-            blob_client.upload_blob(data)
-        except ResourceExistsError:
-            pass
-    yield
-    os.remove(cfg.TEMP_TEMPLATE_PATH)
-    blob_client.delete_blob()
-
-
-def test_fetch_template(use_template):
-    storage = Storage()
-    path = "".join(
+        blob_client.upload_blob(data)
+    template_path = "".join(
         [
             cfg.TEST_STORAGE_ENDPOINT,
             cfg.TEST_STORAGE_TEMPLATE_CONTAINER,
-            "/TestTemplate.docx",
+            "/",
+            test_template_blob_name,
         ]
     )
-    storage.fetch_template(path)
-    assert os.path.exists(cfg.TEMP_TEMPLATE_PATH)
-
-
-@pytest.fixture
-def use_document():
-    with (
-        open(
-            os.path.join("template_populator", "test_data", "TestDocument.pdf"), "rb"
-        ) as test_data,
-        open(cfg.TEMP_DOCUMENT_PATH, "wb") as tmp_data,
-    ):
-        tmp_data.write(test_data.read())
-    yield
-    os.remove(cfg.TEMP_DOCUMENT_PATH)
-    credential = DefaultAzureCredential()
-    blob_service_client = BlobServiceClient(
-        cfg.TEST_STORAGE_ENDPOINT, credential=credential
-    )
-    blob_client = blob_service_client.get_blob_client(
-        container=cfg.TEST_STORAGE_DOCUMENT_CONTAINER, blob="TestDocument.pdf"
-    )
+    yield template_path
     blob_client.delete_blob()
 
 
-def test_post_document(use_document):
+def test_fetch_template(test_template_path):
     storage = Storage()
-    blob_name = "TestDocument.pdf"
-    path = "".join(
+    target_path = f"TestTemplate{cfg.TEST_RUN_UUID}.docx"
+    storage.fetch_template(test_template_path, target_path)
+    full_target_path = os.path.join(cfg.WORK_DIR, target_path)
+    assert os.path.exists(full_target_path)
+    os.remove(full_target_path)
+
+
+def test_post_document():
+    storage = Storage()
+    blob_name = f"TestDocument{cfg.TEST_RUN_UUID}.pdf"
+    target_path = "".join(
         [
             cfg.TEST_STORAGE_ENDPOINT,
             cfg.TEST_STORAGE_DOCUMENT_CONTAINER,
@@ -73,7 +54,10 @@ def test_post_document(use_document):
             blob_name,
         ]
     )
-    storage.post_document(path)
+    local_source_path = os.path.join(
+        "template_populator", "test_data", "TestDocument.pdf"
+    )
+    storage.post_document(local_source_path, target_path)
     credential = DefaultAzureCredential()
     blob_service_client = BlobServiceClient(
         cfg.TEST_STORAGE_ENDPOINT, credential=credential
@@ -83,3 +67,7 @@ def test_post_document(use_document):
     )
     blob_names = list(container_client.list_blob_names())
     assert blob_name in blob_names
+    blob_client = blob_service_client.get_blob_client(
+        container=cfg.TEST_STORAGE_DOCUMENT_CONTAINER, blob=blob_name
+    )
+    blob_client.delete_blob()

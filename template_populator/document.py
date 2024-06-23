@@ -12,24 +12,23 @@ class Document:
         """Save document as pdf. Calls Libre Office in a subprocess.
 
         Args:
-            path (str): Path to pdf
+            path (str): Path to pdf, relative to WORK_DIR
 
         Raises:
             Exception: Subprocess returns 1
         """
-        out_dir = os.path.dirname(path)
+        full_path = os.path.join(cfg.WORK_DIR, path)
+        out_dir = os.path.dirname(full_path)
         os.makedirs(out_dir, exist_ok=True)
-        docx_path = path.rsplit(".")[0] + ".docx"
-        self._doc.save(docx_path)
+        self._doc.save(full_path)
         command = (
-            f"{cfg.SOFFICE}" f" --convert-to pdf" f" --outdir {out_dir}" f" {docx_path}"
+            f"{cfg.SOFFICE}" f" --convert-to pdf" f" --outdir {out_dir}" f" {full_path}"
         ).split(" ")
         out = subprocess.run(command, capture_output=True)
         if out.returncode == 1:
             print(out.stderr.decode())
             print(out.stdout.decode())
             raise Exception("Error during loffice execution to save as pdf")
-        os.remove(docx_path)
 
     def map_placeholders(self, placeholder_map: dict[str, str]):
         for paragraph in self._doc.paragraphs:
