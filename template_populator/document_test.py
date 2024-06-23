@@ -10,7 +10,7 @@ def test_docx_to_pdf():
     )
     doc.save_as_pdf(test_out_path)
     assert os.path.exists(test_out_path)
-    os.remove(test_out_path)
+    # os.remove(test_out_path)
 
 
 def test_map_placeholders():

@@ -32,24 +32,16 @@ This project uses `dotenv`. The configuration hierarchy is (highest to lowest)
 cd az_func
 func start
 ```
-Request `curl http://localhost:7071/api/req`
+Request `curl http://localhost:7071/api/healthcheck`
 
 # Run container
 docker run --rm -it -p 7071:80 tpopdevacr.azurecr.io/tpopdevfuncimg:latest
 
-# Azure runs
-docker run -d --expose=80 --name tpopdevapp_0_feab2ccc -e WEBSITE_USE_DIAGNOSTIC_SERVER=false -e WEBSITE_SITE_NAME=tpopdevapp -e WEBSITE_AUTH_ENABLED=False -e PORT=80 -e WEBSITE_ROLE_INSTANCE_ID=0 -e WEBSITE_HOSTNAME=tpopdevapp.azurewebsites.net -e WEBSITE_INSTANCE_ID=5e0fe6be2d0acc7128080b409166ad9fab444029edca97ce3162c99626039516 -e HTTP_LOGGING_ENABLED=1 tpopdevacr.azurecr.io/tpopdevfuncimg:latest
-
-# Curl
+# Run
 ```
-curl -X GET -v -H 'x-functions-key: <key>' -H 'Content-Type: application/json' 'https://tpopdevapp.azurewebsites.net/api/healthcheck'
-```
+az storage blob upload -f template_populator/test_data/TestTemplate.docx --account-name tpopdevsta -c templates -n test_template_123.docx
 
- TODO
-https://tpopdevsta.blob.core.windows.net/templates/TestTemplate2.docx
-```
-curl -X GET -v -H 'x-functions-key: <key>' -H 'Content-Type: application/json' 'https://tpopdevapp.azurewebsites.net/api/healthcheck'
-```
+curl -X POST -v -H 'x-functions-key: tVEVF_wmRrEQOXRTmTsMHWnZp-LqhA3zek1to2Jhp8ZkAzFuJGEhgg==' -H 'Content-Type: application/json' -d '{"placeholder_map": {"PLACEHOLDER": "world"}, "template_docx_blob_path": "https://tpopdevsta.blob.core.windows.net/templates/test_template_123.docx", "document_pdf_blob_path": "https://tpopdevsta.blob.core.windows.net/documents/test_document_123.pdf"}' 'https://tpopdevapp.azurewebsites.net/api/populated-document'
 
-
-curl -X GET -v -H 'x-functions-key: tVEVF_wmRrEQOXRTmTsMHWnZp-LqhA3zek1to2Jhp8ZkAzFuJGEhgg==' -H 'Content-Type: application/json' 'https://tpopdevapp.azurewebsites.net/api/healthcheck'
+az storage blob download -f test_document_123.pdf --account-name tpopdevsta -c documents -n test_document_123.pdf
+```

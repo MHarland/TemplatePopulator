@@ -10,12 +10,10 @@ RUN apt-get update &&\
     apt-get clean -y
 
 COPY requirements.txt requirements.txt
-RUN pip install --no-cache --upgrade pip && \
-    pip install --no-cache -r requirements.txt
+RUN pip install --no-cache --upgrade pip
 COPY setup.py setup.py
 COPY template_populator template_populator
-
-RUN pip install .
+RUN pip install --no-cache .
 
 WORKDIR /
 COPY az_func/* /home/site/wwwroot/

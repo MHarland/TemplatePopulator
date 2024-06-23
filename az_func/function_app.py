@@ -7,13 +7,13 @@ app = func.FunctionApp()
 
 
 @app.route(route="healthcheck")
-def main(req: func.HttpRequest) -> func.HttpResponse:
+def healthcheck(req: func.HttpRequest) -> func.HttpResponse:
     return func.HttpResponse(status_code=200)
 
 
 @app.route(route="populated-document")
-def main(req: func.HttpRequest) -> str:
-    parameters = json.loads(req.body.decode())
+def populated_document(req: func.HttpRequest) -> func.HttpResponse:
+    parameters = req.get_json()
     populate(
         parameters["placeholder_map"],
         parameters["template_docx_blob_path"],
