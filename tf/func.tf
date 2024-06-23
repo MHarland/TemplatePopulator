@@ -25,12 +25,10 @@ resource "azurerm_linux_function_app" "func_app" {
   https_only                    = true
 
   site_config {
-    application_insights_connection_string = azurerm_application_insights.appi.connection_string
-    application_insights_key               = azurerm_application_insights.appi.instrumentation_key
-    http2_enabled                          = true
-    # container_registry_use_managed_identity = true
+    application_insights_connection_string  = azurerm_application_insights.appi.connection_string
+    application_insights_key                = azurerm_application_insights.appi.instrumentation_key
+    http2_enabled                           = true
     elastic_instance_minimum                = 1
-    health_check_path                       = "/api/healthcheck"
     container_registry_use_managed_identity = true
     application_stack {
       docker {

@@ -31,6 +31,8 @@ export DEVOPS_SERVICE_PRINCIPAL_APPID="$(echo $SP_SECRETS | grep -o "\"appId\": 
 echo "DEVOPS_SERVICE_PRINCIPAL_APPID=${DEVOPS_SERVICE_PRINCIPAL_APPID}"
 DEVOPS_SERVICE_PRINCIPAL_PASSWORD="$(echo $SP_SECRETS | grep -o "\"password\": \"[^\"]*\"" | grep -o "[^\"]*" | tail -1)"
 DEVOPS_SERVICE_PRINCIPAL_OBJECT_ID="$(az ad sp show --id ${DEVOPS_SERVICE_PRINCIPAL_APPID} --query "id" -o tsv)"
+echo "Waiting for Rbac..."
+sleep 20
 az keyvault secret set --name "devops-sp-name" --vault-name $KEYVAULT_NAME --value $DEVOPS_SP_DISPLAY_NAME
 az keyvault secret set --name "devops-sp-password" --vault-name $KEYVAULT_NAME --value $DEVOPS_SERVICE_PRINCIPAL_PASSWORD
 az keyvault secret set --name "devops-sp-app-id" --vault-name $KEYVAULT_NAME --value $DEVOPS_SERVICE_PRINCIPAL_APPID

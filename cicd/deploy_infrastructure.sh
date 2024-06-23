@@ -16,7 +16,6 @@ sub_name="$(az account list --query "[?isDefault].name" -o tsv)"
 export TF_VAR_tenant_id=$(az account list --query "[?name == '${sub_name}'].tenantId" -o tsv)
 echo "Current tenant: ${TF_VAR_tenant_id}"
 echo "Current subscription: ${sub_name}"
-echo "Current platform: ${PLATFORM_NAME}"
 echo "Current environment: ${ENV_NAME}"
 
 # bootstrap Terraform if Terraform-state resource group does not exist
@@ -45,7 +44,7 @@ terraform validate
 # terraform plan
 if [ ! -z $1 ]
 then
-    if [ $1 = "deploy" ]
+    if [ $1 = "apply" ]
     then
         terraform apply -auto-approve
     fi
