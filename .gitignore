@@ -8,3 +8,4 @@ PKG-INFO
 */.terraform
 */.terraform.lock.hcl
 template_populator/infrastructure.json
+.env

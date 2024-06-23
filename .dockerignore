@@ -2,3 +2,4 @@ az_func/local.settings.json
 */venv
 */__pycache__
 */.venv
+.env
