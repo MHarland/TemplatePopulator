@@ -31,3 +31,17 @@ output "test_storage_template_container" {
 output "test_storage_document_container" {
   value = azurerm_storage_container.documents.name
 }
+
+resource "azurerm_private_endpoint" "sta_pe" {
+  name                = "${var.sta_name}-pe"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  subnet_id           = azurerm_subnet.vnet_subnet.id
+
+  private_service_connection {
+    name                           = "${var.sta_name}-pe-service"
+    private_connection_resource_id = azurerm_storage_account.sta.id
+    subresource_names              = ["blob"]
+    is_manual_connection           = false
+  }
+}

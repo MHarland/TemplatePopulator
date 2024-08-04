@@ -57,3 +57,27 @@ variable "image_name" {
 variable "image_tag" {
   type = string
 }
+
+variable "vnet_name" {
+  type = string
+}
+
+variable "vhub_address_prefix" {
+  type = string
+}
+
+variable "vpn_client_address_pool_prefixes" {
+  type = list(string)
+}
+
+variable "vnet_address_space" {
+  type = list(string)
+}
+
+variable "vnet_subnet_prefixes" {
+  type = list(string)
+}
+
+variable "vnet_subnet_func_prefixes" {
+  type = list(string)
+}

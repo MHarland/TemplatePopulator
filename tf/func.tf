@@ -15,6 +15,20 @@ resource "azurerm_storage_account" "func_sta" {
   shared_access_key_enabled = false
 }
 
+resource "azurerm_private_endpoint" "func_sta_pe" {
+  name                = "${var.func_app_name}sta-pe"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  subnet_id           = azurerm_subnet.vnet_subnet.id
+
+  private_service_connection {
+    name                           = "${var.func_app_name}sta-pe-service"
+    private_connection_resource_id = azurerm_storage_account.func_sta.id
+    subresource_names              = ["blob"]
+    is_manual_connection           = false
+  }
+}
+
 resource "azurerm_linux_function_app" "func_app" {
   name                          = var.func_app_name
   location                      = azurerm_resource_group.rg.location
@@ -23,6 +37,7 @@ resource "azurerm_linux_function_app" "func_app" {
   storage_account_name          = azurerm_storage_account.func_sta.name
   storage_uses_managed_identity = true
   https_only                    = true
+  virtual_network_subnet_id     = azurerm_subnet.vnet_subnet.id
 
   site_config {
     application_insights_connection_string  = azurerm_application_insights.appi.connection_string
@@ -48,6 +63,24 @@ resource "azurerm_linux_function_app" "func_app" {
 
   app_settings = {
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
+  }
+}
+
+resource "azurerm_app_service_virtual_network_swift_connection" "func_swift_connection" {
+  app_service_id = azurerm_linux_function_app.func_app.id
+  subnet_id      = azurerm_subnet.vnet_subnet.id
+}
+
+resource "azurerm_private_endpoint" "func_pe" {
+  name                = "${var.func_app_name}-pe"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  subnet_id           = azurerm_subnet.vnet_subnet.id
+
+  private_service_connection {
+    name                           = "${var.func_app_name}-pe-service"
+    private_connection_resource_id = azurerm_linux_function_app.func_app.id
+    is_manual_connection           = false
   }
 }
 
