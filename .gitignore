@@ -10,3 +10,5 @@ PKG-INFO
 template_populator/infrastructure.json
 .env
 secrets
+.vscode
+*__pycache__
