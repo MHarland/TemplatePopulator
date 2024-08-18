@@ -1,12 +1,12 @@
 test_out
-venv
-*.venv
-*pyc
+**/venv
+**/.venv
+**/*pyc
 .DS_Store
 PKG-INFO
 *egg-info
-*/.terraform
-*/.terraform.lock.hcl
+**/.terraform
+**/.terraform.lock.hcl
 template_populator/infrastructure.json
 .env
 secrets

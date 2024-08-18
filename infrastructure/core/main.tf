@@ -12,7 +12,7 @@ terraform {
 
   backend "azurerm" {
     container_name = "terraformstates"
-    key            = "template_populator.tfstate"
+    key            = "core.tfstate"
   }
 
   required_version = ">= 1.1.0"
@@ -30,14 +30,4 @@ provider "azuread" {
 resource "azurerm_resource_group" "rg" {
   name     = var.rg_name
   location = "westeurope"
-}
-
-data "azurerm_key_vault" "devops_kvt" {
-  name                = var.devops_kvt
-  resource_group_name = var.devops_rg
-}
-
-data "azurerm_key_vault_secret" "devops_sp_object_id" {
-  name         = "devops-sp-object-id"
-  key_vault_id = data.azurerm_key_vault.devops_kvt.id
 }

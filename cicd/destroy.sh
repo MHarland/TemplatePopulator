@@ -22,15 +22,7 @@ rm .terraform.lock.hcl
 cd ${PROJECT_ROOT}
 
 RESOURCE_GROUP_NAME="${TF_STATE_RESOURCE_GROUP_NAME}"
-INFRASTRUCTURE_RESOURCE_GROUP_NAME="${TF_VAR_rg_name}"
 STORAGE_ACCOUNT_NAME="${TF_STATE_STORAGE_ACCOUNT_NAME}"
-CONTAINER_NAME=terraformstates
-KEYVAULT_NAME="${PLATFORM_NAME}${ENV_NAME}devopskvt"
-DEVOPS_SP_DISPLAY_NAME="${PLATFORM_NAME}${ENV_NAME}devopssp"
-
-export DEVOPS_SERVICE_PRINCIPAL_APPID="$(az ad app list --display-name "${DEVOPS_SP_DISPLAY_NAME}" --query "[0].appId" | grep -o "[-a-z0-9]*")"
-az ad app delete --id "${DEVOPS_SERVICE_PRINCIPAL_APPID}"
 
 az storage account delete --yes --resource-group $RESOURCE_GROUP_NAME --name $STORAGE_ACCOUNT_NAME
-az keyvault purge --location westeurope --name $KEYVAULT_NAME
 az group delete --name $RESOURCE_GROUP_NAME

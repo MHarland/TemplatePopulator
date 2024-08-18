@@ -14,10 +14,6 @@ variable "subscription_id" {
   type = string
 }
 
-variable "devops_kvt" {
-  type = string
-}
-
 variable "devops_rg" {
   type = string
 }
@@ -26,55 +22,11 @@ variable "tenant_id" {
   type = string
 }
 
-variable "func_app_name" {
-  type = string
-}
-
-variable "kvt_name" {
-  type = string
-}
-
-variable "owners_entra_object_ids" {
-  type = list(string)
-}
-
-variable "appi_name" {
-  type = string
-}
-
-variable "sta_name" {
-  type = string
-}
-
-variable "acr_name" {
-  type = string
-}
-
-variable "image_name" {
-  type = string
-}
-
-variable "image_tag" {
-  type = string
-}
-
 variable "vnet_name" {
   type = string
 }
 
-variable "vnet_address_space" {
-  type = list(string)
-}
-
-variable "vnet_subnet_prefixes" {
-  type = list(string)
-}
-
-variable "vnet_subnet_gate_prefixes" {
-  type = list(string)
-}
-
-variable "vnet_subnet_func_prefixes" {
+variable "owners_entra_object_ids" {
   type = list(string)
 }
 
@@ -92,4 +44,16 @@ variable "devops_vm_username" {
 
 variable "devops_vm_ssh_pub_key_path" {
   type = string
+}
+
+variable "vnet_address_space" {
+  type = list(string)
+}
+
+variable "vnet_subnet_prefixes" {
+  type = list(string)
+}
+
+variable "vnet_subnet_gate_prefixes" {
+  type = list(string)
 }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../secrets/config.sh
+source ${PROJECT_ROOT}/secrets/config.sh
 # export SUBSCRIPTION_ID="..."
 # export PROJECT_NAME="..."
 # export TF_VAR_owners_entra_object_ids='[...]'
@@ -16,7 +16,6 @@ export TF_VAR_project_name="${PROJECT_NAME}"
 export TF_VAR_env_name="${ENV_NAME}"
 export TF_VAR_rg_name="${TF_VAR_project_name}${TF_VAR_env_name}rg"
 export TF_VAR_subscription_id="${SUBSCRIPTION_ID}"
-export TF_VAR_devops_kvt="${PROJECT_NAME}${ENV_NAME}devopskvt"
 export TF_VAR_devops_rg="${TF_STATE_RESOURCE_GROUP_NAME}"
 export TF_VAR_func_app_name="${PROJECT_NAME}${ENV_NAME}app"
 export TF_VAR_kvt_name="${PROJECT_NAME}${ENV_NAME}kvt"
@@ -33,4 +32,4 @@ export TF_VAR_vnet_subnet_func_prefixes='["10.0.1.0/24"]'
 export TF_VAR_devops_vm_name="${PROJECT_NAME}${ENV_NAME}devopsvm"
 export TF_VAR_devops_vm_computer_name="${PROJECT_NAME}${ENV_NAME}devopsvm"
 export TF_VAR_devops_vm_username="jim"
-export TF_VAR_devops_vm_ssh_pub_key_path="../secrets/id_devopsvm.pub"
+export TF_VAR_devops_vm_ssh_pub_key_path="${PROJECT_ROOT}/secrets/id_devopsvm.pub"

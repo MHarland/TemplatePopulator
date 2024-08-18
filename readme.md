@@ -72,6 +72,38 @@ curl -v -G https://${FUNC_APP_NAME}.azurewebsites.net/api/healthcheck?code=${FUN
 curl -X POST -v -H "x-functions-key: ${FUNC_KEY}" -H "Content-Type: application/json" -d "{\"placeholder_map\": {\"PLACEHOLDER\": \"world\"}, \"template_docx_blob_path\": \"https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/templates/TestTemplate.docx\", \"document_pdf_blob_path\": \"https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/documents/test_document_123.pdf\"}" https://${FUNC_APP_NAME}.azurewebsites.net/api/populated-document
 ```
 
-# Login
-`ssh-keygen -t rsa`
-path: `./id_devopsvm`
+# Setup
+Create `secrets/config.sh` as described in `cicd/config.sh`
+
+`ssh-keygen -t rsa` with path: `./secrets/id_devopsvm`
+
+```
+./cicd/deploy_infrastructure_core.sh apply
+```
+
+Take the `devops_vm_ip` of `secrets/infrastructure_core.json`
+and login
+```
+export PROJECT_ROOT=$(pwd)
+source cicd/config.sh
+ssh -i secrets/id_devopsvm ${TF_VAR_devops_vm_username}@<ip>
+```
+
+Install required software on VM
+```
+sudo apt update
+sudo apt install git-all
+```
+
+Get code
+```
+git clone https://github.com/MHarland/TemplatePopulator.git
+cd TemplatePopulator
+```
+
+Upload from different terminal session the secret config
+```
+export PROJECT_ROOT=$(pwd)
+source cicd/config.sh
+scp -i ./secrets/id_devopsvm secrets/config.sh ${TF_VAR_devops_vm_username}@<ip>:~/TemplatePopulator/secrets/config.sh
+```

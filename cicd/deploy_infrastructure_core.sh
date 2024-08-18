@@ -5,12 +5,13 @@ set -e
 # and loads your environment such, that you can run the tests
 
 # Make sure to "az login"
+echo "deploying infrastructure core"
 
 export PROJECT_ROOT=$(pwd)
 echo "PROJECT_ROOT: ${PROJECT_ROOT}"
 source ${PROJECT_ROOT}/cicd/config.sh
 
-cd ${PROJECT_ROOT}/tf
+cd ${PROJECT_ROOT}/infrastructure/core
 az account set -s ${SUBSCRIPTION_ID}
 sub_name="$(az account list --query "[?isDefault].name" -o tsv)"
 export TF_VAR_tenant_id=$(az account list --query "[?name == '${sub_name}'].tenantId" -o tsv)
@@ -29,14 +30,6 @@ then
     done
 fi
 
-# terraform
-#DEVOPS_SERVICE_PRINCIPAL_APPID="$(echo $SP_SECRETS | grep -o "\"appId\": \"[^\"]*\"" | grep -o "[^\"]*" | tail -1)"
-#ARM_CLIENT_ID=$DEVOPS_SERVICE_PRINCIPAL_APPID
-#DEVOPS_SERVICE_PRINCIPAL_PASSWORD="$(echo $SP_SECRETS | grep -o "\"password\": \"[^\"]*\"" | grep -o "[^\"]*" | tail -1)"
-#ARM_CLIENT_SECRET=$DEVOPS_SERVICE_PRINCIPAL_PASSWORD
-#TENANT_ID=$(az account list --query "[?name == '${sub_name}'].tenantId" -o tsv)
-#ARM_TENANT_ID=$TENANT_ID
-#ARM_SUBSCRIPTION_ID=$SUBSCRIPTION_ID
 terraform init \
     -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP_NAME}" \
     -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT_NAME}"
@@ -50,6 +43,6 @@ then
     fi
 fi
 
-terraform output -json > ${PROJECT_ROOT}/template_populator/infrastructure.json
+terraform output -json > ${PROJECT_ROOT}/secrets/infrastructure_core.json
 
 cd ${PROJECT_ROOT}
