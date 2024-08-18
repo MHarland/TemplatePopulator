@@ -46,16 +46,32 @@ func start
 docker run --rm -it -p 7071:80 tpopdevacr.azurecr.io/tpopdevfuncimg:latest
 Request `curl http://localhost:7071/api/healthcheck`
 
-# Example
+# Example 
+## MacOs - ZShell
 ```
 export STORAGE_ACCOUNT_NAME=<storage account name>
+export FUNC_APP_NAME=<function app name>
+export FUNC_KEY=<function key>
+
+curl -v -G https://${FUNC_APP_NAME}.azurewebsites.net/api/healthcheck?code=${FUNC_KEY}
 
 az storage blob upload -f template_populator/test_data/TestTemplate.docx --account-name ${STORAGE_ACCOUNT_NAME} -c templates -n test_template_123.docx
 
-curl -X POST -v -H 'x-functions-key: <func-key>' -H 'Content-Type: application/json' -d '{"placeholder_map": {"PLACEHOLDER": "world"}, "template_docx_blob_path": "https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/templates/test_template_123.docx", "document_pdf_blob_path": "https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/documents/test_document_123.pdf"}' 'https://tpopdevapp.azurewebsites.net/api/populated-document'
+curl -X POST -v -H 'x-functions-key: ${FUNC_KEY}' -H 'Content-Type: application/json' -d '{"placeholder_map": {"PLACEHOLDER": "world"}, "template_docx_blob_path": "https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/templates/test_template_123.docx", "document_pdf_blob_path": "https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/documents/test_document_123.pdf"}' 'https://${FUNC_APP_NAME}.azurewebsites.net/api/populated-document'
 
 az storage blob download -f test_document_123.pdf --account-name ${STORAGE_ACCOUNT_NAME} -c documents -n test_document_123.pdf
 
 az storage blob delete --account-name ${STORAGE_ACCOUNT_NAME} -c documents -n test_document_123.pdf
 az storage blob delete --account-name ${STORAGE_ACCOUNT_NAME} -c templates -n test_template_123.docx
 ```
+
+## Ubuntu - Bash
+```
+curl -v -G https://${FUNC_APP_NAME}.azurewebsites.net/api/healthcheck?code=${FUNC_KEY}
+
+curl -X POST -v -H "x-functions-key: ${FUNC_KEY}" -H "Content-Type: application/json" -d "{\"placeholder_map\": {\"PLACEHOLDER\": \"world\"}, \"template_docx_blob_path\": \"https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/templates/TestTemplate.docx\", \"document_pdf_blob_path\": \"https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/documents/test_document_123.pdf\"}" https://${FUNC_APP_NAME}.azurewebsites.net/api/populated-document
+```
+
+# Login
+`ssh-keygen -t rsa`
+path: `./id_devopsvm`

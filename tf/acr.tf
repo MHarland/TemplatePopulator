@@ -1,11 +1,12 @@
 resource "azurerm_container_registry" "acr" {
-  name                       = var.acr_name
-  resource_group_name        = azurerm_resource_group.rg.name
-  location                   = azurerm_resource_group.rg.location
-  sku                        = "Premium"
-  admin_enabled              = true
-  anonymous_pull_enabled     = false
-  network_rule_bypass_option = "AzureServices"
+  name                          = var.acr_name
+  resource_group_name           = azurerm_resource_group.rg.name
+  location                      = azurerm_resource_group.rg.location
+  sku                           = "Premium"
+  admin_enabled                 = true
+  anonymous_pull_enabled        = false
+  network_rule_bypass_option    = "AzureServices"
+  public_network_access_enabled = false
 }
 
 resource "azurerm_private_endpoint" "acr_pe" {

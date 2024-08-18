@@ -14,18 +14,22 @@ resource "azurerm_subnet" "vnet_subnet" {
   address_prefixes     = var.vnet_subnet_prefixes
 }
 
-resource "azurerm_subnet" "vnet_subnet_func" {
-  name                 = "${var.vnet_name}subfunc"
+resource "azurerm_subnet" "vnet_subnet_gate" {
+  name                 = "${var.vnet_name}subgate"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = var.vnet_subnet_func_prefixes
-
-  delegation {
-    name = "func-delegation"
-
-    service_delegation {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
+  address_prefixes     = var.vnet_subnet_gate_prefixes
 }
+
+# resource "azurerm_firewall" "firewall_gate" {
+#   name                = "${var.vnet_name}subgatefirewall"
+#   location            = azurerm_resource_group.rg.location
+#   resource_group_name = azurerm_resource_group.rg.name
+#   sku_name            = "AZFW_VNet"
+#   sku_tier            = "Standard"
+
+#   ip_configuration {
+#     name      = "configuration"
+#     subnet_id = "AzureFirewallSubnet"
+#   }
+# }

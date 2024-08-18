@@ -1,11 +1,13 @@
 resource "azurerm_storage_account" "sta" {
-  name                      = var.sta_name
-  resource_group_name       = azurerm_resource_group.rg.name
-  location                  = azurerm_resource_group.rg.location
-  account_tier              = "Standard"
-  account_replication_type  = "LRS"
-  account_kind              = "BlobStorage"
-  enable_https_traffic_only = true
+  name                          = var.sta_name
+  resource_group_name           = azurerm_resource_group.rg.name
+  location                      = azurerm_resource_group.rg.location
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  account_kind                  = "StorageV2"
+  enable_https_traffic_only     = true
+  public_network_access_enabled = false
+  dns_endpoint_type             = "Standard"
 }
 
 resource "azurerm_storage_container" "templates" {
@@ -43,5 +45,9 @@ resource "azurerm_private_endpoint" "sta_pe" {
     private_connection_resource_id = azurerm_storage_account.sta.id
     subresource_names              = ["blob"]
     is_manual_connection           = false
+  }
+  private_dns_zone_group {
+    name                 = "default"
+    private_dns_zone_ids = [azurerm_private_dns_zone.dns_zone1.id]
   }
 }

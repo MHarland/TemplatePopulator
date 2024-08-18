@@ -6,13 +6,31 @@ resource "azurerm_service_plan" "func_sp" {
   sku_name            = "P1v2"
 }
 
+resource "azurerm_subnet" "vnet_subnet_func" {
+  name                 = "${var.vnet_name}subfunc"
+  resource_group_name  = azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = var.vnet_subnet_func_prefixes
+
+  delegation {
+    name = "func-delegation"
+
+    service_delegation {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+}
+
 resource "azurerm_storage_account" "func_sta" {
-  name                      = "${var.func_app_name}sta"
-  resource_group_name       = azurerm_resource_group.rg.name
-  location                  = azurerm_resource_group.rg.location
-  account_tier              = "Standard"
-  account_replication_type  = "LRS"
-  shared_access_key_enabled = false
+  name                          = "${var.func_app_name}sta"
+  resource_group_name           = azurerm_resource_group.rg.name
+  location                      = azurerm_resource_group.rg.location
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  shared_access_key_enabled     = true
+  public_network_access_enabled = false
+  dns_endpoint_type             = "Standard"
 }
 
 resource "azurerm_private_endpoint" "func_sta_pe" {
@@ -27,6 +45,10 @@ resource "azurerm_private_endpoint" "func_sta_pe" {
     subresource_names              = ["blob"]
     is_manual_connection           = false
   }
+  private_dns_zone_group {
+    name                 = "default"
+    private_dns_zone_ids = [azurerm_private_dns_zone.dns_zone1.id]
+  }
 }
 
 resource "azurerm_linux_function_app" "func_app" {
@@ -37,7 +59,7 @@ resource "azurerm_linux_function_app" "func_app" {
   storage_account_name          = azurerm_storage_account.func_sta.name
   storage_uses_managed_identity = true
   https_only                    = true
-  virtual_network_subnet_id     = azurerm_subnet.vnet_subnet.id
+  virtual_network_subnet_id     = azurerm_subnet.vnet_subnet_func.id
 
   site_config {
     application_insights_connection_string  = azurerm_application_insights.appi.connection_string
@@ -66,11 +88,6 @@ resource "azurerm_linux_function_app" "func_app" {
   }
 }
 
-resource "azurerm_app_service_virtual_network_swift_connection" "func_swift_connection" {
-  app_service_id = azurerm_linux_function_app.func_app.id
-  subnet_id      = azurerm_subnet.vnet_subnet.id
-}
-
 resource "azurerm_private_endpoint" "func_pe" {
   name                = "${var.func_app_name}-pe"
   location            = azurerm_resource_group.rg.location
@@ -81,6 +98,7 @@ resource "azurerm_private_endpoint" "func_pe" {
     name                           = "${var.func_app_name}-pe-service"
     private_connection_resource_id = azurerm_linux_function_app.func_app.id
     is_manual_connection           = false
+    subresource_names              = ["sites"]
   }
 }
 
