@@ -45,6 +45,8 @@ fi
 
 terraform output -json > ${PROJECT_ROOT}/secrets/infrastructure_core.json
 echo "$(terraform output devops_vm_ip | sed 's/\"//g')" > ${PROJECT_ROOT}/secrets/devops_vm_ip.txt
+echo "$(terraform output devops_sp_client_id | sed 's/\"//g')" > ${PROJECT_ROOT}/secrets/devops_sp_client_id.txt
+echo "$(terraform output devops_sp_client_secret | sed 's/\"//g')" > ${PROJECT_ROOT}/secrets/devops_sp_client_secret.txt
 echo $TF_VAR_tenant_id > ${PROJECT_ROOT}/secrets/tenant_id.txt
 
 cd ${PROJECT_ROOT}

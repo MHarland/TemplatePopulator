@@ -44,18 +44,13 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = "22_04-lts"
     version   = "latest"
   }
-  identity {
-    type = "SystemAssigned"
-  }
+  # identity {
+  #   type = "SystemAssigned"
+  # }
 }
 
-resource "azuread_group_member" "devopsvm_is_owner" {
-  group_object_id  = azuread_group.owners.id
-  member_object_id = azurerm_linux_virtual_machine.vm.identity[0].principal_id
-}
-
-# resource "azuread_group_member" "devopsvm_is_subscription_reader" {
-#   group_object_id  = azuread_group.subscription_reader.id
+# resource "azuread_group_member" "devopsvm_is_owner" {
+#   group_object_id  = azuread_group.owners.id
 #   member_object_id = azurerm_linux_virtual_machine.vm.identity[0].principal_id
 # }
 

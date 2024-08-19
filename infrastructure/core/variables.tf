@@ -65,3 +65,7 @@ variable "sta_tf_state_name" {
 variable "rg_tf_state_name" {
   type = string
 }
+
+variable "devops_sp_app_name" {
+  type = string
+}
