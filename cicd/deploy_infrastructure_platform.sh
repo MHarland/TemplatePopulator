@@ -15,11 +15,10 @@ export ARM_CLIENT_SECRET=$(cat ${PROJECT_ROOT}/secrets/devops_sp_client_secret.t
 export ARM_TENANT_ID=$(cat ${PROJECT_ROOT}/secrets/tenant_id.txt)
 export ARM_SUBSCRIPTION_ID=${SUBSCRIPTION_ID}
 
-az account set -s ${SUBSCRIPTION_ID}
-sub_name="$(az account list --query "[?isDefault].name" -o tsv)"
-export TF_VAR_tenant_id=$(az account list --query "[?name == '${sub_name}'].tenantId" -o tsv)
+# az account set -s ${SUBSCRIPTION_ID}
+export TF_VAR_tenant_id=$ARM_TENANT_ID
 echo "Current tenant: ${TF_VAR_tenant_id}"
-echo "Current subscription: ${sub_name}"
+echo "Current subscription: ${ARM_SUBSCRIPTION_ID}"
 echo "Current environment: ${ENV_NAME}"
 
 terraform init \
