@@ -44,5 +44,7 @@ then
 fi
 
 terraform output -json > ${PROJECT_ROOT}/secrets/infrastructure_core.json
+echo "$(terraform output devops_vm_ip | sed 's/\"//g')" > ${PROJECT_ROOT}/secrets/devops_vm_ip.txt
+echo $TF_VAR_tenant_id > ${PROJECT_ROOT}/secrets/tenant_id.txt
 
 cd ${PROJECT_ROOT}

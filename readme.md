@@ -86,13 +86,28 @@ and login
 ```
 export PROJECT_ROOT=$(pwd)
 source cicd/config.sh
-ssh -i secrets/id_devopsvm ${TF_VAR_devops_vm_username}@<ip>
+export DEVOPS_VM_IP=$(cat ${PROJECT_ROOT}/secrets/devops_vm_ip.txt)
+ssh -i secrets/id_devopsvm ${TF_VAR_devops_vm_username}@${DEVOPS_VM_IP}
 ```
 
-Install required software on VM
+Install required software on VM (git, Azure CLI, Terraform)
 ```
 sudo apt update
 sudo apt install git-all
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
+wget -O- https://apt.releases.hashicorp.com/gpg | \
+gpg --dearmor | \
+sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+gpg --no-default-keyring \
+--keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
+--fingerprint
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
+sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update
+sudo apt-get install terraform
 ```
 
 Get code
@@ -105,5 +120,12 @@ Upload from different terminal session the secret config
 ```
 export PROJECT_ROOT=$(pwd)
 source cicd/config.sh
-scp -i ./secrets/id_devopsvm secrets/config.sh ${TF_VAR_devops_vm_username}@<ip>:~/TemplatePopulator/secrets/config.sh
+export DEVOPS_VM_IP=$(cat ${PROJECT_ROOT}/secrets/devops_vm_ip.txt)
+scp -i ./secrets/id_devopsvm secrets/config.sh ${TF_VAR_devops_vm_username}@${DEVOPS_VM_IP}:~/TemplatePopulator/secrets/config.sh
+scp -i ./secrets/id_devopsvm secrets/tenant_id.txt ${TF_VAR_devops_vm_username}@${DEVOPS_VM_IP}:~/TemplatePopulator/secrets/tenant_id.txt
+```
+
+```
+az login --identity
+./cicd/deploy_infrastructure_platform.sh apply
 ```

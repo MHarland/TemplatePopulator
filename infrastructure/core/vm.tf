@@ -54,6 +54,11 @@ resource "azuread_group_member" "devopsvm_is_owner" {
   member_object_id = azurerm_linux_virtual_machine.vm.identity[0].principal_id
 }
 
+# resource "azuread_group_member" "devopsvm_is_subscription_reader" {
+#   group_object_id  = azuread_group.subscription_reader.id
+#   member_object_id = azurerm_linux_virtual_machine.vm.identity[0].principal_id
+# }
+
 output "devops_vm_ip" {
   value = azurerm_public_ip.vm_public_ip.ip_address
 }

@@ -9,6 +9,10 @@ echo "PROJECT_ROOT: ${PROJECT_ROOT}"
 source ${PROJECT_ROOT}/cicd/config.sh
 
 cd ${PROJECT_ROOT}/infrastructure/platform
+export ARM_USE_MSI=true
+export ARM_SUBSCRIPTION_ID=${SUBSCRIPTION_ID}
+export ARM_TENANT_ID=$(cat ${PROJECT_ROOT}/secrets/tenant_id.txt)
+
 az account set -s ${SUBSCRIPTION_ID}
 sub_name="$(az account list --query "[?isDefault].name" -o tsv)"
 export TF_VAR_tenant_id=$(az account list --query "[?name == '${sub_name}'].tenantId" -o tsv)
