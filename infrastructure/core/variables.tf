@@ -57,3 +57,11 @@ variable "vnet_subnet_prefixes" {
 variable "vnet_subnet_gate_prefixes" {
   type = list(string)
 }
+
+variable "sta_tf_state_name" {
+  type = string
+}
+
+variable "rg_tf_state_name" {
+  type = string
+}

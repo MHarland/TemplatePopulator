@@ -23,11 +23,11 @@ resource "azurerm_role_assignment" "rsg_owner" {
   principal_id         = azuread_group.owners.object_id
 }
 
-resource "azuread_group" "subscription_reader" {
-  display_name     = "${var.project_name}-subscription-readers"
-  owners           = var.owners_entra_object_ids
-  security_enabled = true
-}
+# resource "azuread_group" "subscription_reader" {
+#   display_name     = "${var.project_name}-subscription-readers"
+#   owners           = var.owners_entra_object_ids
+#   security_enabled = true
+# }
 
 # resource "azurerm_role_assignment" "subscription_reader_is_reader" {
 #   scope                = var.subscription_id

@@ -12,6 +12,8 @@ export TF_STATE_RESOURCE_GROUP_NAME="${PROJECT_NAME}${ENV_NAME}tfrg"
 export TF_STATE_STORAGE_ACCOUNT_NAME="${PROJECT_NAME}${ENV_NAME}tfsta"
 
 # Platform infrastructure
+export TF_VAR_rg_tf_state_name="${TF_STATE_RESOURCE_GROUP_NAME}"
+export TF_VAR_sta_tf_state_name="${TF_STATE_STORAGE_ACCOUNT_NAME}"
 export TF_VAR_project_name="${PROJECT_NAME}"
 export TF_VAR_env_name="${ENV_NAME}"
 export TF_VAR_rg_name="${TF_VAR_project_name}${TF_VAR_env_name}rg"
