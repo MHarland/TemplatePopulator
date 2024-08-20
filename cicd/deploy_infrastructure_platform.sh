@@ -9,7 +9,6 @@ echo "PROJECT_ROOT: ${PROJECT_ROOT}"
 source ${PROJECT_ROOT}/cicd/config.sh
 
 cd ${PROJECT_ROOT}/infrastructure/platform
-# sh
 export ARM_CLIENT_ID=$(cat ${PROJECT_ROOT}/secrets/devops_sp_client_id.txt)
 export ARM_CLIENT_SECRET=$(cat ${PROJECT_ROOT}/secrets/devops_sp_client_secret.txt)
 export ARM_TENANT_ID=$(cat ${PROJECT_ROOT}/secrets/tenant_id.txt)
