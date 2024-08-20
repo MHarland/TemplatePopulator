@@ -1,14 +1,14 @@
 resource "azurerm_service_plan" "func_sp" {
   name                = "${var.func_app_name}sp"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
   os_type             = "Linux"
   sku_name            = "P1v2"
 }
 
 resource "azurerm_subnet" "vnet_subnet_func" {
   name                 = "${var.vnet_name}subfunc"
-  resource_group_name  = azurerm_resource_group.rg.name
+  resource_group_name  = data.azurerm_resource_group.rg.name
   virtual_network_name = var.vnet_name
   address_prefixes     = var.vnet_subnet_func_prefixes
 
@@ -24,8 +24,8 @@ resource "azurerm_subnet" "vnet_subnet_func" {
 
 resource "azurerm_storage_account" "func_sta" {
   name                          = "${var.func_app_name}sta"
-  resource_group_name           = azurerm_resource_group.rg.name
-  location                      = azurerm_resource_group.rg.location
+  resource_group_name           = data.azurerm_resource_group.rg.name
+  location                      = data.azurerm_resource_group.rg.location
   account_tier                  = "Standard"
   account_replication_type      = "LRS"
   shared_access_key_enabled     = true
@@ -35,8 +35,8 @@ resource "azurerm_storage_account" "func_sta" {
 
 resource "azurerm_private_endpoint" "func_sta_pe" {
   name                = "${var.func_app_name}sta-pe"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
   subnet_id           = data.azurerm_subnet.vnet_subnet.id
 
   private_service_connection {
@@ -53,8 +53,8 @@ resource "azurerm_private_endpoint" "func_sta_pe" {
 
 resource "azurerm_linux_function_app" "func_app" {
   name                          = var.func_app_name
-  location                      = azurerm_resource_group.rg.location
-  resource_group_name           = azurerm_resource_group.rg.name
+  location                      = data.azurerm_resource_group.rg.location
+  resource_group_name           = data.azurerm_resource_group.rg.name
   service_plan_id               = azurerm_service_plan.func_sp.id
   storage_account_name          = azurerm_storage_account.func_sta.name
   storage_uses_managed_identity = true
@@ -90,8 +90,8 @@ resource "azurerm_linux_function_app" "func_app" {
 
 resource "azurerm_private_endpoint" "func_pe" {
   name                = "${var.func_app_name}-pe"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
   subnet_id           = data.azurerm_subnet.vnet_subnet.id
 
   private_service_connection {

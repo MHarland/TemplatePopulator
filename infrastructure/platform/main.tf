@@ -26,8 +26,3 @@ provider "azurerm" {
 provider "azuread" {
   tenant_id = var.tenant_id
 }
-
-resource "azurerm_resource_group" "rg" {
-  name     = var.rg_name
-  location = "westeurope"
-}

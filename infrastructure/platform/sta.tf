@@ -1,7 +1,7 @@
 resource "azurerm_storage_account" "sta" {
   name                          = var.sta_name
-  resource_group_name           = azurerm_resource_group.rg.name
-  location                      = azurerm_resource_group.rg.location
+  resource_group_name           = data.azurerm_resource_group.rg.name
+  location                      = data.azurerm_resource_group.rg.location
   account_tier                  = "Standard"
   account_replication_type      = "LRS"
   account_kind                  = "StorageV2"
@@ -36,8 +36,8 @@ output "test_storage_document_container" {
 
 resource "azurerm_private_endpoint" "sta_pe" {
   name                = "${var.sta_name}-pe"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
   subnet_id           = data.azurerm_subnet.vnet_subnet.id
 
   private_service_connection {
