@@ -1,6 +1,5 @@
 data "azurerm_resource_group" "rg" {
-  name     = var.rg_name
-  location = "westeurope"
+  name = var.rg_name
 }
 
 data "azurerm_subnet" "vnet_subnet" {
