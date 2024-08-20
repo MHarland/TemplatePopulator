@@ -23,6 +23,20 @@ resource "azurerm_role_assignment" "rsg_owner" {
   principal_id         = azuread_group.owners.object_id
 }
 
+resource "azurerm_role_assignment" "owner_is_tf_state_sta_owner" {
+  scope                = data.azurerm_storage_account.sta_tf_state.id
+  role_definition_name = "Owner"
+  principal_id         = azuread_group.owners.object_id
+}
+
+resource "azurerm_role_assignment" "owner_is_tf_state_sta_data_owner" {
+  scope                = data.azurerm_storage_account.sta_tf_state.id
+  role_definition_name = "Storage Blob Data Owner"
+  principal_id         = azuread_group.owners.object_id
+}
+
+
+
 # resource "azuread_group" "subscription_reader" {
 #   display_name     = "${var.project_name}-subscription-readers"
 #   owners           = var.owners_entra_object_ids

@@ -29,6 +29,7 @@ export TF_VAR_image_tag="latest"
 export TF_VAR_vnet_name="${PROJECT_NAME}${ENV_NAME}vnet"
 export TF_VAR_vnet_address_space='["10.0.0.0/16"]'
 export TF_VAR_vnet_subnet_prefixes='["10.0.0.0/24"]'
+export TF_VAR_vnet_subnet_name="${PROJECT_NAME}${ENV_NAME}vnetsub"
 export TF_VAR_vnet_subnet_gate_prefixes='["10.0.3.0/24"]'
 export TF_VAR_vnet_subnet_func_prefixes='["10.0.1.0/24"]'
 export TF_VAR_devops_vm_name="${PROJECT_NAME}${ENV_NAME}devopsvm"

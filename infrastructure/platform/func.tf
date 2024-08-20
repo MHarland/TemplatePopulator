@@ -37,7 +37,7 @@ resource "azurerm_private_endpoint" "func_sta_pe" {
   name                = "${var.func_app_name}sta-pe"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  subnet_id           = azurerm_subnet.vnet_subnet.id
+  subnet_id           = data.azurerm_subnet.vnet_subnet.id
 
   private_service_connection {
     name                           = "${var.func_app_name}sta-pe-service"
@@ -92,7 +92,7 @@ resource "azurerm_private_endpoint" "func_pe" {
   name                = "${var.func_app_name}-pe"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  subnet_id           = azurerm_subnet.vnet_subnet.id
+  subnet_id           = data.azurerm_subnet.vnet_subnet.id
 
   private_service_connection {
     name                           = "${var.func_app_name}-pe-service"

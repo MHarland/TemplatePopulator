@@ -128,6 +128,6 @@ scp -i ./secrets/id_devopsvm secrets/devops_sp_client_secret.txt ${TF_VAR_devops
 ```
 
 ```
-az login --identity
+cd ~/TemplatePopulator
 ./cicd/deploy_infrastructure_platform.sh apply
 ```

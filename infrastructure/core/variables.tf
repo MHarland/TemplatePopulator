@@ -69,3 +69,7 @@ variable "rg_tf_state_name" {
 variable "devops_sp_app_name" {
   type = string
 }
+
+variable "vnet_subnet_name" {
+  type = string
+}

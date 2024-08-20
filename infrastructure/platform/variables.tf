@@ -57,3 +57,11 @@ variable "image_tag" {
 variable "vnet_subnet_func_prefixes" {
   type = list(string)
 }
+
+variable "vnet_subnet_name" {
+  type = string
+}
+
+variable "vnet_name" {
+  type = string
+}
