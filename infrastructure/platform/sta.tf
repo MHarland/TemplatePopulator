@@ -48,6 +48,6 @@ resource "azurerm_private_endpoint" "sta_pe" {
   }
   private_dns_zone_group {
     name                 = "default"
-    private_dns_zone_ids = [azurerm_private_dns_zone.dns_zone1.id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.dns_zone1.id]
   }
 }
