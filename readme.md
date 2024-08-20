@@ -131,3 +131,9 @@ scp -i ./secrets/id_devopsvm secrets/devops_sp_client_secret.txt ${TF_VAR_devops
 cd ~/TemplatePopulator
 ./cicd/deploy_infrastructure_platform.sh apply
 ```
+
+# ToDo
+Container (Storage) creation needs a `depends_on` for either permission or private endpoint
+```
+Error: checking for existing Container "documents" (Account "Account \"tpop3devsta\" (IsEdgeZone false / ZoneName \"\" / Subdomain Type \"blob\" / DomainSuffix \"core.windows.net\")"): executing request: unexpected status 403 (403 This request is not authorized to perform this operation.) with AuthorizationFailure: This request is not authorized to perform this operation.
+```
