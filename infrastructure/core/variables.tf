@@ -73,3 +73,7 @@ variable "devops_sp_app_name" {
 variable "vnet_subnet_name" {
   type = string
 }
+
+variable "dns_zone1_name" {
+  type = string
+}

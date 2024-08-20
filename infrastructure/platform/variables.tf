@@ -61,3 +61,7 @@ variable "vnet_subnet_func_prefixes" {
 variable "vnet_subnet_name" {
   type = string
 }
+
+variable "dns_zone1_name" {
+  type = string
+}

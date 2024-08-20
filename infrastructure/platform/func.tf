@@ -9,7 +9,7 @@ resource "azurerm_service_plan" "func_sp" {
 resource "azurerm_subnet" "vnet_subnet_func" {
   name                 = "${var.vnet_name}subfunc"
   resource_group_name  = azurerm_resource_group.rg.name
-  virtual_network_name = azurerm_virtual_network.vnet.name
+  virtual_network_name = var.vnet_name
   address_prefixes     = var.vnet_subnet_func_prefixes
 
   delegation {
