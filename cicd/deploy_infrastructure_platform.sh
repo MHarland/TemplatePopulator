@@ -1,8 +1,7 @@
 #!/bin/bash
 set -e
 
-# Make sure to "az login"
-echo "deploying infrastructure platform"
+echo "Deploying infrastructure platform"
 
 export PROJECT_ROOT=$(pwd)
 echo "PROJECT_ROOT: ${PROJECT_ROOT}"

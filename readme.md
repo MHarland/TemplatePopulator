@@ -42,9 +42,13 @@ cd az_func
 func start
 ```
 
-# Run container
+# Run container locally
+```
+export PROJECT_ROOT=$(pwd)
+docker build -t  -f ${PROJECT_ROOT}/az_func/Dockerfile ${PROJECT_ROOT}
 docker run --rm -it -p 7071:80 tpopdevacr.azurecr.io/tpopdevfuncimg:latest
 Request `curl http://localhost:7071/api/healthcheck`
+```
 
 # Example 
 ## MacOs - ZShell

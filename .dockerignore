@@ -3,3 +3,4 @@ az_func/local.settings.json
 */__pycache__
 */.venv
 .env
+secrets

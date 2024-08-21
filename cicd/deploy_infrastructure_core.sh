@@ -4,8 +4,7 @@ set -e
 # This script synchronizes the platform deployment with your local code
 # and loads your environment such, that you can run the tests
 
-# Make sure to "az login"
-echo "deploying infrastructure core"
+echo "Deploying infrastructure core"
 
 export PROJECT_ROOT=$(pwd)
 echo "PROJECT_ROOT: ${PROJECT_ROOT}"
