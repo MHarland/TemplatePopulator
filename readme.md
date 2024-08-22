@@ -6,12 +6,6 @@ This projects provides the code for an Azure function that receives
 3. an output path where the resulting pdf will be stored
 The storage media are blob storages. The template populator applies the map to the document and saves it as a pdf.
 
-# Deployment
-```
-./cicd/deploy_infrastructure.sh apply
-./cicd/deploy_template_populator.sh
-```
-
 # Local development
 1. conda create -p ./venv python=3.11
 2. pip install -r requirements.txt
@@ -77,60 +71,29 @@ curl -X POST -v -H "x-functions-key: ${FUNC_KEY}" -H "Content-Type: application/
 ```
 
 # Setup
+
+## Secrets
 Create `secrets/config.sh` as described in `cicd/config.sh`
 
 `ssh-keygen -t rsa` with path: `./secrets/id_devopsvm`
 
+## Deployment
+First, deploy the authorization, networking and CICD VM.
 ```
 ./cicd/deploy_infrastructure_core.sh apply
 ```
 
-Take the `devops_vm_ip` of `secrets/infrastructure_core.json`
-and login
+Upload secrets that were created during the core deployment (e.g. service principal)
 ```
-export PROJECT_ROOT=$(pwd)
-source cicd/config.sh
-export DEVOPS_VM_IP=$(cat ${PROJECT_ROOT}/secrets/devops_vm_ip.txt)
-ssh -i secrets/id_devopsvm ${TF_VAR_devops_vm_username}@${DEVOPS_VM_IP}
+./cicd/vm_load_secrets.sh
 ```
 
-Install required software on VM (git, Azure CLI, Terraform)
+Login
 ```
-sudo apt update
-sudo apt install git-all
-curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-
-sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
-wget -O- https://apt.releases.hashicorp.com/gpg | \
-gpg --dearmor | \
-sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
-gpg --no-default-keyring \
---keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
---fingerprint
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
-https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
-sudo tee /etc/apt/sources.list.d/hashicorp.list
-sudo apt update
-sudo apt-get install terraform
+./cicd/vm_login.sh
 ```
 
-Get code
-```
-git clone https://github.com/MHarland/TemplatePopulator.git
-cd TemplatePopulator
-```
-
-Upload from different terminal session the secret config
-```
-export PROJECT_ROOT=$(pwd)
-source cicd/config.sh
-export DEVOPS_VM_IP=$(cat ${PROJECT_ROOT}/secrets/devops_vm_ip.txt)
-scp -i ./secrets/id_devopsvm secrets/config.sh ${TF_VAR_devops_vm_username}@${DEVOPS_VM_IP}:~/TemplatePopulator/secrets/config.sh
-scp -i ./secrets/id_devopsvm secrets/tenant_id.txt ${TF_VAR_devops_vm_username}@${DEVOPS_VM_IP}:~/TemplatePopulator/secrets/tenant_id.txt
-scp -i ./secrets/id_devopsvm secrets/devops_sp_client_id.txt ${TF_VAR_devops_vm_username}@${DEVOPS_VM_IP}:~/TemplatePopulator/secrets/devops_sp_client_id.txt
-scp -i ./secrets/id_devopsvm secrets/devops_sp_client_secret.txt ${TF_VAR_devops_vm_username}@${DEVOPS_VM_IP}:~/TemplatePopulator/secrets/devops_sp_client_secret.txt
-```
-
+Deploy application layer infrastructure
 ```
 cd ~/TemplatePopulator
 ./cicd/deploy_infrastructure_platform.sh apply
