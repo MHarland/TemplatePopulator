@@ -125,9 +125,3 @@ docker build -t  -f ${PROJECT_ROOT}/az_func/Dockerfile ${PROJECT_ROOT}
 docker run --rm -it -p 7071:80 tpopdevacr.azurecr.io/tpopdevfuncimg:latest
 Request `curl http://localhost:7071/api/healthcheck`
 ```
-
-# ToDo
-Container (Storage) creation needs a `depends_on` for either permission or private endpoint
-```
-Error: checking for existing Container "documents" (Account "Account \"tpop3devsta\" (IsEdgeZone false / ZoneName \"\" / Subdomain Type \"blob\" / DomainSuffix \"core.windows.net\")"): executing request: unexpected status 403 (403 This request is not authorized to perform this operation.) with AuthorizationFailure: This request is not authorized to perform this operation.
-```
