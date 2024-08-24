@@ -5,8 +5,11 @@ resource "azurerm_container_registry" "acr" {
   sku                           = "Premium"
   admin_enabled                 = true
   anonymous_pull_enabled        = false
-  network_rule_bypass_option    = "AzureServices"
+  network_rule_bypass_option    = "None"
   public_network_access_enabled = false
+  network_rule_set {
+    default_action = "Allow"
+  }
 }
 
 resource "azurerm_private_endpoint" "acr_pe" {
