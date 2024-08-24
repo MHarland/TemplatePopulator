@@ -10,7 +10,7 @@ echo "Destroying platform of ${PROJECT_NAME} - ${ENV_NAME} in subscription ${sub
 sleep 5
 
 # This resource is not recognized by Terraform (Bug) and implicitly created by Azure during the application insights deployment
-az resource delete --yes -g "${TF_VAR_rg_name}" --name "$(az resource list --query "[?contains(name, 'Failure Anomalies')].name" -o tsv)" --resource-type "microsoft.alertsmanagement/smartDetectorAlertRules"
+az resource delete yes -g "${TF_VAR_rg_name}" --name "$(az resource list --query "[?contains(name, 'Failure Anomalies')].name" -o tsv)" --resource-type "microsoft.alertsmanagement/smartDetectorAlertRules"
 
 cd ${PROJECT_ROOT}/infrastructure/platform
 terraform init \
