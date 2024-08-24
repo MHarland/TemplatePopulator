@@ -65,3 +65,7 @@ variable "vnet_subnet_name" {
 variable "dns_zone1_name" {
   type = string
 }
+
+variable "devops_vm_ip" {
+  type = string
+}

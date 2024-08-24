@@ -8,7 +8,11 @@ resource "azurerm_container_registry" "acr" {
   network_rule_bypass_option    = "None"
   public_network_access_enabled = false
   network_rule_set {
-    default_action = "Allow"
+    default_action = "Deny"
+    ip_rule {
+      action   = "Allow"
+      ip_range = var.devops_vm_ip
+    }
   }
 }
 

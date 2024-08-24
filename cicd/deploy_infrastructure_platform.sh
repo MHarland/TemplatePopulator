@@ -19,6 +19,7 @@ echo "Current tenant: ${TF_VAR_tenant_id}"
 echo "Current subscription: ${ARM_SUBSCRIPTION_ID}"
 echo "Current environment: ${ENV_NAME}"
 
+export TF_VAR_devops_vm_ip=$(cat ${PROJECT_ROOT}/secrets/devops_vm_ip.txt)
 terraform init \
     -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP_NAME}" \
     -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT_NAME}"
