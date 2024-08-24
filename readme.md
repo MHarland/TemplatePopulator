@@ -58,7 +58,7 @@ cd ~/TemplatePopulator
 
 Deploy the app
 ```
-./cicd/deploy_template_populator.sh
+sudo ./cicd/deploy_template_populator.sh
 ```
 
 # Example 
