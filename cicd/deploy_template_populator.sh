@@ -15,9 +15,9 @@ export URL=${TF_VAR_acr_name}/${TF_VAR_image_name}:${TF_VAR_image_tag}
 
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
 az acr login --name ${TF_VAR_acr_name}
-docker login ${TF_VAR_acr_name}
-docker build -t $URL -f ${PROJECT_ROOT}/az_func/Dockerfile ${PROJECT_ROOT}
-docker push $URL
+# sudo docker login ${TF_VAR_acr_name}
+sudo docker build -t $URL -f ${PROJECT_ROOT}/az_func/Dockerfile ${PROJECT_ROOT}
+sudo docker push $URL
 #az acr build --registry ${TF_VAR_acr_name} --image ${TF_VAR_image_name}:${TF_VAR_image_tag} --file ${PROJECT_ROOT}/az_func/Dockerfile ${PROJECT_ROOT}
 #az acr artifact-streaming update -n ${TF_VAR_acr_name} --repository ${TF_VAR_image_name} --enable-streaming True
 
