@@ -4,6 +4,9 @@ set -e
 export PROJECT_ROOT=$(pwd)
 echo "PROJECT_ROOT: ${PROJECT_ROOT}"
 source ${PROJECT_ROOT}/cicd/config.sh
+az login --service-principal -u $(cat ${PROJECT_ROOT}/secrets/devops_sp_client_id.txt) -p $(cat ${PROJECT_ROOT}/secrets/devops_sp_client_secret.txt) --tenant $(cat ${PROJECT_ROOT}/secrets/tenant_id.txt)
+
+
 sub_name="$(az account list --query "[?isDefault].name" -o tsv)"
 export TF_VAR_tenant_id=$(az account list --query "[?name == '${sub_name}'].tenantId" -o tsv)
 echo "Destroying platform of ${PROJECT_NAME} - ${ENV_NAME} in subscription ${sub_name}"
