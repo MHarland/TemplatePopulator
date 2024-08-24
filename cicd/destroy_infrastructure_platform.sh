@@ -4,16 +4,13 @@ set -e
 export PROJECT_ROOT=$(pwd)
 echo "PROJECT_ROOT: ${PROJECT_ROOT}"
 source ${PROJECT_ROOT}/cicd/config.sh
-az login --service-principal -u $(cat ${PROJECT_ROOT}/secrets/devops_sp_client_id.txt) -p $(cat ${PROJECT_ROOT}/secrets/devops_sp_client_secret.txt) --tenant $(cat ${PROJECT_ROOT}/secrets/tenant_id.txt)
-
-
 sub_name="$(az account list --query "[?isDefault].name" -o tsv)"
 export TF_VAR_tenant_id=$(az account list --query "[?name == '${sub_name}'].tenantId" -o tsv)
 echo "Destroying platform of ${PROJECT_NAME} - ${ENV_NAME} in subscription ${sub_name}"
 sleep 5
 
 # This resource is not recognized by Terraform (Bug) and implicitly created by Azure during the application insights deployment
-az resource delete -g "${TF_VAR_rg_name}" --name "$(az resource list --query "[?contains(name, 'Failure Anomalies')].name" -o tsv)" --resource-type "microsoft.alertsmanagement/smartDetectorAlertRules"
+#az resource delete -g "${TF_VAR_rg_name}" --name "$(az resource list --query "[?contains(name, 'Failure Anomalies')].name" -o tsv)" --resource-type "microsoft.alertsmanagement/smartDetectorAlertRules"
 
 cd ${PROJECT_ROOT}/infrastructure/platform
 terraform init \
