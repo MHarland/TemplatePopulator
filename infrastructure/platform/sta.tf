@@ -14,12 +14,14 @@ resource "azurerm_storage_container" "templates" {
   name                  = "templates"
   storage_account_name  = azurerm_storage_account.sta.name
   container_access_type = "private"
+  depends_on            = [azurerm_private_endpoint.sta_pe]
 }
 
 resource "azurerm_storage_container" "documents" {
   name                  = "documents"
   storage_account_name  = azurerm_storage_account.sta.name
   container_access_type = "private"
+  depends_on            = [azurerm_private_endpoint.sta_pe]
 }
 
 output "test_storage_endpoint" {

@@ -28,7 +28,9 @@ then
         sleep 1;
     done
 else
-    az storage account update --name $TF_STATE_STORAGE_ACCOUNT_NAME --resource-group $TF_STATE_RESOURCE_GROUP_NAME --public-network-access Enabled
+    az storage account update --name $TF_STATE_STORAGE_ACCOUNT_NAME --resource-group $TF_STATE_RESOURCE_GROUP_NAME --public-network-access Enabled;
+    echo "waiting for storage account to be public";
+    sleep 3;
 fi
 
 terraform init \
@@ -43,7 +45,6 @@ then
         terraform apply -auto-approve
     fi
 fi
-az storage account update --name $TF_STATE_STORAGE_ACCOUNT_NAME --resource-group $TF_STATE_RESOURCE_GROUP_NAME --public-network-access Disabled
 
 
 terraform output -json > ${PROJECT_ROOT}/secrets/infrastructure_core.json

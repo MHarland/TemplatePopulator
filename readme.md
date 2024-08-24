@@ -34,6 +34,11 @@ First, deploy the authorization, networking and CICD VM.
 ./cicd/deploy_infrastructure_core.sh apply
 ```
 
+Then, load or update the code on the DevOps VM
+```
+./cicd/vm_load_code.sh
+```
+
 Upload secrets that were created during the core deployment (e.g. service principal)
 ```
 ./cicd/vm_load_secrets.sh
@@ -50,6 +55,11 @@ cd ~/TemplatePopulator
 ./cicd/deploy_infrastructure_platform.sh apply
 ```
 ![Image](./docs/systems.png)
+
+Deploy the app
+```
+./cicd/deploy_template_populator.sh
+```
 
 # Example 
 ## MacOs - ZShell
