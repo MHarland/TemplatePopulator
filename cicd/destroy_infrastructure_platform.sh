@@ -17,6 +17,7 @@ export ARM_CLIENT_ID=$(cat ${PROJECT_ROOT}/secrets/devops_sp_client_id.txt)
 export ARM_CLIENT_SECRET=$(cat ${PROJECT_ROOT}/secrets/devops_sp_client_secret.txt)
 export ARM_TENANT_ID=$(cat ${PROJECT_ROOT}/secrets/tenant_id.txt)
 export ARM_SUBSCRIPTION_ID=${SUBSCRIPTION_ID}
+export TF_VAR_devops_vm_ip=$(cat ${PROJECT_ROOT}/secrets/devops_vm_ip.txt)
 
 # az account set -s ${SUBSCRIPTION_ID}
 export TF_VAR_tenant_id=$ARM_TENANT_ID
