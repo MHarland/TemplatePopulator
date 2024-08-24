@@ -34,6 +34,4 @@ fi
 
 terraform output -json > ${PROJECT_ROOT}/template_populator/infrastructure.json
 
-az storage account update --name $TF_STATE_STORAGE_ACCOUNT_NAME --resource-group $TF_STATE_RESOURCE_GROUP_NAME --public-network-access Disabled
-
 cd ${PROJECT_ROOT}
