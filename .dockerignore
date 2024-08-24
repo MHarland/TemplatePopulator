@@ -4,3 +4,4 @@ az_func/local.settings.json
 */.venv
 .env
 secrets
+docs

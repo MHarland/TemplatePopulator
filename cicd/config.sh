@@ -1,11 +1,6 @@
 #!/bin/bash
 
 source ${PROJECT_ROOT}/secrets/config.sh
-# export SUBSCRIPTION_ID="..."
-# export PROJECT_NAME="..."
-# export TF_VAR_owners_entra_object_ids='[...]'
-
-export ENV_NAME="dev"
 
 # The Terraform state is managed here
 export TF_STATE_RESOURCE_GROUP_NAME="${PROJECT_NAME}${ENV_NAME}tfrg"

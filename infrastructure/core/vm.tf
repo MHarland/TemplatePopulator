@@ -44,10 +44,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = "22_04-lts"
     version   = "latest"
   }
-  identity {
-    type         = "UserAssigned"
-    identity_ids = [azuread_service_principal.devops_sp.id]
-  }
+
 }
 
 resource "azurerm_virtual_machine_extension" "vm_ext" {
@@ -60,7 +57,7 @@ resource "azurerm_virtual_machine_extension" "vm_ext" {
   # cat ./cicd/vm_setup.sh | gzip -9 | base64 
   settings = <<SETTINGS
  {
-  "script": "H4sIAMSyx2YCA5WSz0sdMRDH7/krxmcRC2ZzFxSKPVSwtAdvtkg2mbcbzCZhJlGe+Mc7u/re04IUT5PMj893mJnDA9OHZHrLo2KsoFGpQwiJq40RhlBPwD42QnAxnEBFIrvONCluPoMtFVrxtuL+/6ZUi1WuUQTNVzDWWvjUGHtnu4nN5Uvetxl+cXX5HXt4goWy9LID6gG3InB0BO/cWy29gSG1MgDndX2whLpQLkg1IGuXpykn9TAX6F9630epHWFEy8jdKJrBZSqdpJtBUE/wR81Wa4+WpkyLZ5GviGAak+FRtMwdbiikgc0Ooi25Mdyjfg11M+gcjMd7k5oM5QWcsrDXtsW6TRQFvXt/XmKuXssHqYivKnRjhpWX0d5wGBJ63W/OPo39K9z/Dw2+HEfub1+DoB1/hcmGtPpnbljdTDGcGzmBxMC18/sOFseH5/Vu7ftrlJOdAy57VHJ4cqw54W7T4hlbv2z25w9L0SZvrnEqUci/c2liM3WSpZ4BQgkUDw4DAAA="
+  "script": "H4sIABvGyWYCA5WSwWocMQyG734KZVNCA+vxPZBCaQ8JpDSH3toSPLZ2xqzHNpKdsCEPX80k2aWhoezJ9i/p+4Ws0xPTh2R6y6NirKBRqVMIiauNEYZQ12AfGyG4GNZQkchuMk2Km89gS9WDFLXibcW/tVeE3s0ULVflGsmbb2CstfCFMXZru4nN9XPq59nny831V+zhCRbY0ta/vODsDN61S60MwHlTHyyhLpQLUg3I2uVpykk9zAX6uz70UWpHGNEycjeKZ3CZSifpZhDUE/xS86m1R0tTpkVZ7CsimMZkeBQvs8UdhTSw2UO0JTeGe9QvoW4GfQLj8d6kJkN5Bqcs7I1tsb4mioPe34+3mKs38kAqolWFbsyw8jLanxyGhF73u8ujsb+F+/+hwYePkfu7lyBox+cw2ZBWb+aG1c0Uw7mRE0gMXDt/6GARjtq0w37KEs8xlz0q2T9Z35xw/+GijK1fPvjblaVokzc/cCpR4Le5NDkzdZKl/gBqSOOUIAMAAA=="
  }
 SETTINGS
 

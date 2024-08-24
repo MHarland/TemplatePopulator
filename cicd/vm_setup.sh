@@ -2,8 +2,8 @@
 set -e
 
 # install git, azure cli, terraform
-sudo apt update
-sudo apt install git-all
+sudo apt-get update
+sudo apt-get install -y git-all
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
 sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
@@ -16,8 +16,8 @@ gpg --no-default-keyring \
 echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
 https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
 sudo tee /etc/apt/sources.list.d/hashicorp.list
-sudo apt update
-sudo apt-get install terraform
+sudo apt-get update
+sudo apt-get install -y terraform
 
 # get code
 git clone https://github.com/MHarland/TemplatePopulator.git

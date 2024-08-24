@@ -12,3 +12,4 @@ template_populator/infrastructure.json
 secrets
 .vscode
 *__pycache__
+docs/.$*

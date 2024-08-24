@@ -27,6 +27,8 @@ then
         echo "waiting for ${TF_STATE_RESOURCE_GROUP_NAME}";
         sleep 1;
     done
+else
+    az storage account update --name $TF_STATE_STORAGE_ACCOUNT_NAME --resource-group $TF_STATE_RESOURCE_GROUP_NAME --public-network-access Enabled
 fi
 
 terraform init \
@@ -41,6 +43,8 @@ then
         terraform apply -auto-approve
     fi
 fi
+az storage account update --name $TF_STATE_STORAGE_ACCOUNT_NAME --resource-group $TF_STATE_RESOURCE_GROUP_NAME --public-network-access Disabled
+
 
 terraform output -json > ${PROJECT_ROOT}/secrets/infrastructure_core.json
 echo "$(terraform output devops_vm_ip | sed 's/\"//g')" > ${PROJECT_ROOT}/secrets/devops_vm_ip.txt

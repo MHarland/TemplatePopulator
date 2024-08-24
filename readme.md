@@ -6,43 +6,50 @@ This projects provides the code for an Azure function that receives
 3. an output path where the resulting pdf will be stored
 The storage media are blob storages. The template populator applies the map to the document and saves it as a pdf.
 
-# Local development
-1. conda create -p ./venv python=3.11
-2. pip install -r requirements.txt
-3. pip install -e .
-
-If you have to modify the environment to run tests locally, create a dot-env file `.env`.
-
 # Requirements
-- Azure account
-- Libre Office
+- Azure account and subscription
+- Libre Office (for local development)
 - Docker
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/)
+- Terraform
 
-# Config
-This project uses `dotenv`. The configuration hierarchy is (highest to lowest)
-1. Environment variables
-2. `.env` file
-3. default values in `cfg.py`, check this file to figure out what environment variables are relevant
+# Setup
 
-# Tests
+## Secrets
+Create `secrets/config.sh` as such
 ```
-pytest
-```
-
-# Run function locally
-```
-cd az_func
-func start
+export SUBSCRIPTION_ID="..."
+export PROJECT_NAME="..."
+export ENV_NAME="..."
+# check your user's object ID in Azure Entra ID
+export TF_VAR_owners_entra_object_ids='["..."]'
 ```
 
-# Run container locally
+Generate an ssh key `ssh-keygen -t rsa`  for the login on the DevOps VM
+at path: `secrets/id_devopsvm`
+
+## Deployment
+First, deploy the authorization, networking and CICD VM.
 ```
-export PROJECT_ROOT=$(pwd)
-docker build -t  -f ${PROJECT_ROOT}/az_func/Dockerfile ${PROJECT_ROOT}
-docker run --rm -it -p 7071:80 tpopdevacr.azurecr.io/tpopdevfuncimg:latest
-Request `curl http://localhost:7071/api/healthcheck`
+./cicd/deploy_infrastructure_core.sh apply
 ```
+
+Upload secrets that were created during the core deployment (e.g. service principal)
+```
+./cicd/vm_load_secrets.sh
+```
+
+Login
+```
+./cicd/vm_login.sh
+```
+
+and deploy application layer infrastructure
+```
+cd ~/TemplatePopulator
+./cicd/deploy_infrastructure_platform.sh apply
+```
+![Image](./docs/systems.png)
 
 # Example 
 ## MacOs - ZShell
@@ -70,33 +77,36 @@ curl -v -G https://${FUNC_APP_NAME}.azurewebsites.net/api/healthcheck?code=${FUN
 curl -X POST -v -H "x-functions-key: ${FUNC_KEY}" -H "Content-Type: application/json" -d "{\"placeholder_map\": {\"PLACEHOLDER\": \"world\"}, \"template_docx_blob_path\": \"https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/templates/TestTemplate.docx\", \"document_pdf_blob_path\": \"https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/documents/test_document_123.pdf\"}" https://${FUNC_APP_NAME}.azurewebsites.net/api/populated-document
 ```
 
-# Setup
+# Local development
+1. conda create -p ./venv python=3.11
+2. pip install -r requirements.txt
+3. pip install -e .
 
-## Secrets
-Create `secrets/config.sh` as described in `cicd/config.sh`
+If you have to modify the environment to run tests locally, create a dot-env file `.env`.
 
-`ssh-keygen -t rsa` with path: `./secrets/id_devopsvm`
+# Config
+This project uses `dotenv`. The configuration hierarchy is (highest to lowest)
+1. Environment variables
+2. `.env` file
+3. default values in `cfg.py`, check this file to figure out what environment variables are relevant
 
-## Deployment
-First, deploy the authorization, networking and CICD VM.
+# Tests
 ```
-./cicd/deploy_infrastructure_core.sh apply
-```
-
-Upload secrets that were created during the core deployment (e.g. service principal)
-```
-./cicd/vm_load_secrets.sh
-```
-
-Login
-```
-./cicd/vm_login.sh
+pytest
 ```
 
-Deploy application layer infrastructure
+# Run function locally
 ```
-cd ~/TemplatePopulator
-./cicd/deploy_infrastructure_platform.sh apply
+cd az_func
+func start
+```
+
+# Run container locally
+```
+export PROJECT_ROOT=$(pwd)
+docker build -t  -f ${PROJECT_ROOT}/az_func/Dockerfile ${PROJECT_ROOT}
+docker run --rm -it -p 7071:80 tpopdevacr.azurecr.io/tpopdevfuncimg:latest
+Request `curl http://localhost:7071/api/healthcheck`
 ```
 
 # ToDo
