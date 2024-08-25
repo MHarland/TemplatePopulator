@@ -6,7 +6,7 @@ resource "azurerm_container_registry" "acr" {
   admin_enabled                 = true
   anonymous_pull_enabled        = false
   network_rule_bypass_option    = "None"
-  public_network_access_enabled = false
+  public_network_access_enabled = true
   network_rule_set {
     default_action = "Deny"
     ip_rule {
