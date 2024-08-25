@@ -9,9 +9,6 @@ export TF_VAR_tenant_id=$(az account list --query "[?name == '${sub_name}'].tena
 echo "Destroying platform of ${PROJECT_NAME} - ${ENV_NAME} in subscription ${sub_name}"
 sleep 5
 
-# This resource is not recognized by Terraform (Bug) and implicitly created by Azure during the application insights deployment
-#az resource delete -g "${TF_VAR_rg_name}" --name "$(az resource list --query "[?contains(name, 'Failure Anomalies')].name" -o tsv)" --resource-type "microsoft.alertsmanagement/smartDetectorAlertRules"
-
 cd ${PROJECT_ROOT}/infrastructure/platform
 export ARM_CLIENT_ID=$(cat ${PROJECT_ROOT}/secrets/devops_sp_client_id.txt)
 export ARM_CLIENT_SECRET=$(cat ${PROJECT_ROOT}/secrets/devops_sp_client_secret.txt)

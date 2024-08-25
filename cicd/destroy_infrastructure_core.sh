@@ -9,6 +9,9 @@ export TF_VAR_tenant_id=$(az account list --query "[?name == '${sub_name}'].tena
 echo "Destroying core of ${PROJECT_NAME} - ${ENV_NAME} in subscription ${sub_name}"
 sleep 5
 
+# This resource is not recognized by Terraform (Bug) and implicitly created by Azure during the application insights deployment
+az resource delete -g "${TF_VAR_rg_name}" --name "Application Insights Smart Detection" --resource-type "Microsoft.Insights/ActionGroups"
+
 cd ${PROJECT_ROOT}/infrastructure/core
 terraform init \
     -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP_NAME}" \

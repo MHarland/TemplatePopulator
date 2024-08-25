@@ -6,12 +6,13 @@ This projects provides the code for an Azure function that receives
 3. an output path where the resulting pdf will be stored
 The storage media are blob storages. The template populator applies the map to the document and saves it as a pdf.
 
+
 # Requirements
-- Azure account and subscription
-- Libre Office (for local development)
-- Docker
+- [Azure](https://azure.microsoft.com/en-us) account and subscription
+- [Terraform](https://developer.hashicorp.com/terraform/install?product_intent=terraform)
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/)
-- Terraform
+- [Libre Office](https://www.libreoffice.org/download/download-libreoffice/) (for local development)
+- [Docker](https://docs.docker.com/engine/install/) (for local development)
 
 # Setup
 
@@ -54,7 +55,7 @@ and deploy application layer infrastructure
 cd ~/TemplatePopulator
 ./cicd/deploy_infrastructure_platform.sh apply
 ```
-![Image](./docs/systems.png)
+Probably, this command has to be run twice as the private endpoint configuration has an Azure-internal delay that Terraform doesn't take into account properly. There would be a `403` Error while reading the container states of the storage account.
 
 Deploy the app
 ```
@@ -140,3 +141,13 @@ and destroy the core infrastructure
 ```
 ./cicd/destroy_infrastructure_core.sh
 ```
+
+# ToDo
+- Mange most secrets in a key vault
+- DevOps VM authentication (maybe assign the service principal as a user assigned identity)
+
+# Architecture
+
+## Infrastructure
+![Image](./docs/systems.png)
+
