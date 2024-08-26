@@ -6,6 +6,8 @@ This projects provides the code for an Azure function that receives
 3. an output path where the resulting pdf will be stored
 The storage media are blob storages. The template populator applies the map to the document and saves it as a pdf.
 
+![Image](./docs/context.png)
+
 
 # Requirements
 - [Azure](https://azure.microsoft.com/en-us) account and subscription
@@ -64,8 +66,10 @@ sudo ./cicd/deploy_template_populator.sh
 
 # Example 
 ```
-export STORAGE_ACCOUNT_NAME="..."
-export FUNC_APP_NAME="..."
+export PROJECT_ROOT=$(pwd)
+source cicd/config.sh
+export STORAGE_ACCOUNT_NAME=$TF_VAR_sta_name
+export FUNC_APP_NAME=$TF_VAR_func_app_name
 export FUNC_KEY="..."
 ```
 
@@ -131,6 +135,7 @@ Request `curl http://localhost:7071/api/healthcheck`
 Login
 ```
 ./cicd/vm_login.sh
+cd TemplatePopulator
 ```
 Destroy application layer
 ```
