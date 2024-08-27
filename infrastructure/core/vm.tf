@@ -57,7 +57,7 @@ resource "azurerm_virtual_machine_extension" "vm_ext" {
   # cat ./cicd/vm_setup.sh | gzip -9 | base64 
   settings = <<SETTINGS
  {
-  "script": "H4sIAJ/yyWYCA5WU207cMBCG7/MUU1jRRcVxb1AlJCqtWISQKFRF6k1ByLEnibWObfnAoeLhsZPsbmk5dK9ij2f+3x5/zvYHWklNK+bbwmMAgkWxDVL7wJSCRoY9YL+jQ+BK7kFA51htXLcHwvAFusJHYYDZQJpUHK1gAZ/HllLkIauRNCx4dGnuz6ANwfoDStmClZ2np0PqLPsdnZ3OsYJH6MX67b3kBTs78KqdjrYBb+pwxxwS64xFFyR6wk3XGV3c5QJyQdb7sKF0qJB59GWbPCU3zpYpnTZJ6hGuivwlRCBznXF9pLcPiECjd9S3yYsu8MFJ3Xi6EiHM8VbeIhmXyiz0FajAW6pjasogrE3SrllUYZmYHMhqvLlFrq7TBJ1NsVAgbw1sidTaX142GgWpHg43lr1Ouu83DSZT5aubcREI97vQMam3/uobBp5VqDfR8SSipA+lWO+gD2xE2orTDPNMCJj3tH70YOpacskUnHw/gXSig410OSM8M5Q0UpqHTPKQvErq4POX/X0gYn2uZU+HzIH+2l+u+RfmTivDRDk8qh44JXW8p7GKOsSePmL+VaRjAfN8FG87I4B9cm/njl0JLYJDa7wMxqWuGZjZAOM1HAysXBUw8pI5OJxMhV1kUnucBjYC8pCe7C78QdQb7tf/fe7efDIth8MYT5YopVc/gDz5efzj8vTi/OboYn58Pvt2vJV2EVilcIAM4F3MRu88e/YgX+LiVTAGkQTHekTSHxO40SERj06U0izXqiiVuCdWxUbqVYHp0kXgGC2eAHSBolWYBQAA"
+  "script": "H4sIAE1BzmYCA5WUbW8bNwzH39+nYN2gS9FIKtZ2BQK0gNE4mYEsLuZ0wNAWhizxzoLvpIMeHCfohx9Pd7bXLX3IK1EU9adI/aTHj8TSWLGUYVUEjMCwKB7Dh/dn4+sJzCfX19OriznMzkHeJY++WWyMj0nWi0aqlbG4wG1EG4yzML2CTcNjCdNz+Hv2YSdy/ft0DufTy8mjTtnYEGVdQ2XiSa8JqjYnENF7WTrfnIB2ao2+CEk7kG1kFR0rtVpG/Nq3k2K3nRojs1DJ0zxcwirGNpwKIdeSN0FM+9Bxl+/d5fQMl/AFslgu/L5c8OQJfDOdTW0FwZXxRnpkrXct+mgwMOWaxtniptvAZuxwjjZyjzXKgIGvKKdRzrecwkVFUl/gU9GNjGmUvnE+e3L6iAgiBS/CinKJNd56Y6sg9iJMerqJDbJhiXdCb0Fo3AibqCm9sHWkXcpUx10gZWB7++Eput0lTdC35IsFqpWDkabWfgymsqjZ8vbNg2U/k+6PmwZHx3VYLoZFYCo8hUYaO/pP3zCqTkUEl7wikdqEyPXhBNnxINL2nHYwj7WGs0zrLwFcWRplZA0X7y+AKjp9kK6STHUMkQaFBehI7oP3QQ08f/3qFTB9qGvX0z6yp78M8wP/2t3Y2knN+0eVgauNTVuRlsnGlOlj7v+KYtgggxrEV43TIJ/578cOXYkrBI+tCyY6T11zMG4jDNdw2rPyqYCBl46DN0fHul13pGacejYiqkhP9in8i6jvZP/803Xn5EfHvC/GBbZDiV59D/LRX5M/59PZ1eLd7GxyNf5jMqJTRLmssYcM4IeYDbm72VcP8j4uvglGL0JwHCxGPyYoZyMRj15z43Zry2RqvWVtnSpj9xtcQxeBg7comrU2vv97F3Qm14aFrJBesNJwnzt/ZqNdZzchhuxvpVqTwfMO1GRZjCIviRf815cv+PMczLKL5e6z7W8v2bDIo/S8uhsVNMLddlPCT0QXXFDhpak4fdtc+GQ74x9RWrKKxQYAAA=="
  }
 SETTINGS
 
@@ -65,4 +65,10 @@ SETTINGS
 
 output "devops_vm_ip" {
   value = azurerm_public_ip.vm_public_ip.ip_address
+}
+
+resource "azurerm_key_vault_secret" "devops_vm_ip" {
+  name         = "devops-vm-ip"
+  value        = azurerm_public_ip.vm_public_ip.ip_address
+  key_vault_id = azurerm_key_vault.kvt.id
 }

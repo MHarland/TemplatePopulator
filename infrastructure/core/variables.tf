@@ -70,10 +70,18 @@ variable "devops_sp_app_name" {
   type = string
 }
 
+variable "devops_sp_secret" {
+  type = string
+}
+
 variable "vnet_subnet_name" {
   type = string
 }
 
 variable "dns_zone1_name" {
+  type = string
+}
+
+variable "kvt_name" {
   type = string
 }

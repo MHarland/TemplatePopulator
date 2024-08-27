@@ -1,9 +1,19 @@
 resource "azuread_application_registration" "devops_app" {
   display_name = var.devops_sp_app_name
 }
+resource "azurerm_key_vault_secret" "devopsvm_sp_client_id" {
+  name         = "DevOpsVM-sp-client-id"
+  value        = azuread_application_registration.devops_app.client_id
+  key_vault_id = azurerm_key_vault.kvt.id
+}
 
 resource "azuread_application_password" "devops_app_secret" {
   application_id = azuread_application_registration.devops_app.id
+}
+resource "azurerm_key_vault_secret" "devopsvm_sp_secret" {
+  name         = "DevOpsVM-sp-secret"
+  value        = azuread_application_password.devops_app_secret.value
+  key_vault_id = azurerm_key_vault.kvt.id
 }
 
 resource "azuread_service_principal" "devops_sp" {

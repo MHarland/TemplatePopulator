@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+# UPDATE SETTINGS OF azurerm_virtual_machine_extension IN vm.tf IF YOU UPDATE THIS FILE!
+
 # install git, azure cli, terraform, docker
 sudo apt-get update
 sudo apt-get install -y git-all
@@ -34,3 +36,10 @@ echo \
 sudo apt-get update
 
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+mkdir azure_devops_agent
+cd  azure_devops_agent
+wget "https://vstsagentpackage.azureedge.net/agent/3.243.0/vsts-agent-linux-x64-3.243.0.tar.gz"
+tar zxvf vsts-agent-linux-x64-3.243.0.tar.gz
+./config.sh
+./run.sh
