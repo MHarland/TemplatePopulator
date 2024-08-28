@@ -70,10 +70,6 @@ variable "devops_sp_app_name" {
   type = string
 }
 
-variable "devops_sp_secret" {
-  type = string
-}
-
 variable "vnet_subnet_name" {
   type = string
 }

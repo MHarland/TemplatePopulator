@@ -71,4 +71,5 @@ resource "azurerm_key_vault_secret" "devops_vm_ip" {
   name         = "devops-vm-ip"
   value        = azurerm_public_ip.vm_public_ip.ip_address
   key_vault_id = azurerm_key_vault.kvt.id
+  depends_on   = [azurerm_private_endpoint.kvt_pe]
 }

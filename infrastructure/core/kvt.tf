@@ -30,10 +30,12 @@ resource "azurerm_key_vault_secret" "tenant_id" {
   name         = "tenant-id"
   value        = var.tenant_id
   key_vault_id = azurerm_key_vault.kvt.id
+  depends_on   = [azurerm_private_endpoint.kvt_pe]
 }
 
 resource "azurerm_key_vault_secret" "subscription_id" {
   name         = "subscription-id"
   value        = var.subscription_id
   key_vault_id = azurerm_key_vault.kvt.id
+  depends_on   = [azurerm_private_endpoint.kvt_pe]
 }
