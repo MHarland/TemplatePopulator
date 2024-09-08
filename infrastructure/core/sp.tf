@@ -5,7 +5,7 @@ resource "azurerm_key_vault_secret" "devopsvm_sp_client_id" {
   name         = "DevOpsVM-sp-client-id"
   value        = azuread_application_registration.devops_app.client_id
   key_vault_id = azurerm_key_vault.kvt.id
-  depends_on   = [azurerm_private_endpoint.kvt_pe]
+  depends_on   = [azurerm_private_endpoint.kvt_pe, azurerm_role_assignment.keyvault_admin, azuread_group_member.devops_sp_is_owner]
 }
 
 resource "azuread_application_password" "devops_app_secret" {
@@ -15,7 +15,7 @@ resource "azurerm_key_vault_secret" "devopsvm_sp_secret" {
   name         = "DevOpsVM-sp-secret"
   value        = azuread_application_password.devops_app_secret.value
   key_vault_id = azurerm_key_vault.kvt.id
-  depends_on   = [azurerm_private_endpoint.kvt_pe]
+  depends_on   = [azurerm_private_endpoint.kvt_pe, azurerm_role_assignment.keyvault_admin, azuread_group_member.devops_sp_is_owner]
 }
 
 resource "azuread_service_principal" "devops_sp" {

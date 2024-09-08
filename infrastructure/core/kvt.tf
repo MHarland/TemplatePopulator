@@ -6,6 +6,7 @@ resource "azurerm_key_vault" "kvt" {
   soft_delete_retention_days = 7
   purge_protection_enabled   = false
   sku_name                   = "standard"
+  enable_rbac_authorization  = true
 }
 
 resource "azurerm_private_endpoint" "kvt_pe" {
@@ -30,12 +31,12 @@ resource "azurerm_key_vault_secret" "tenant_id" {
   name         = "tenant-id"
   value        = var.tenant_id
   key_vault_id = azurerm_key_vault.kvt.id
-  depends_on   = [azurerm_private_endpoint.kvt_pe]
+  depends_on   = [azurerm_private_endpoint.kvt_pe, azurerm_role_assignment.keyvault_admin, azuread_group_member.devops_sp_is_owner]
 }
 
 resource "azurerm_key_vault_secret" "subscription_id" {
   name         = "subscription-id"
   value        = var.subscription_id
   key_vault_id = azurerm_key_vault.kvt.id
-  depends_on   = [azurerm_private_endpoint.kvt_pe]
+  depends_on   = [azurerm_private_endpoint.kvt_pe, azurerm_role_assignment.keyvault_admin, azuread_group_member.devops_sp_is_owner]
 }

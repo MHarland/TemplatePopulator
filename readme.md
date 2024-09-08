@@ -26,6 +26,8 @@ export PROJECT_NAME="..."
 export ENV_NAME="..."
 # check your user's object ID in Azure Entra ID
 export TF_VAR_owners_entra_object_ids='["..."]'
+export AZURE_DEVOPS_ORG_URL="https://dev.azure.com/..."
+export AZURE_DEVOPS_PAT="..."
 ```
 
 Generate an ssh key `ssh-keygen -t rsa`  for the login on the DevOps VM
@@ -44,7 +46,7 @@ Then, load or update the code on the DevOps VM
 
 Upload secrets that were created during the core deployment (e.g. service principal)
 ```
-./cicd/vm_load_secrets.sh
+./cicd/vm_setup.sh
 ```
 
 Login

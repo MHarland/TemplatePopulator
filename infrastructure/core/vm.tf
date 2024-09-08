@@ -47,21 +47,21 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
 }
 
-resource "azurerm_virtual_machine_extension" "vm_ext" {
-  name                 = "${var.devops_vm_name}-extension"
-  virtual_machine_id   = azurerm_linux_virtual_machine.vm.id
-  publisher            = "Microsoft.Azure.Extensions"
-  type                 = "CustomScript"
-  type_handler_version = "2.0"
+# Setting up this is messy with secrets
+# resource "azurerm_virtual_machine_extension" "vm_ext" {
+#   name                 = "${var.devops_vm_name}-extension"
+#   virtual_machine_id   = azurerm_linux_virtual_machine.vm.id
+#   publisher            = "Microsoft.Azure.Extensions"
+#   type                 = "CustomScript"
+#   type_handler_version = "2.0"
 
-  # cat ./cicd/vm_setup.sh | gzip -9 | base64 
-  settings = <<SETTINGS
- {
-  "script": "H4sIAE1BzmYCA5WUbW8bNwzH39+nYN2gS9FIKtZ2BQK0gNE4mYEsLuZ0wNAWhizxzoLvpIMeHCfohx9Pd7bXLX3IK1EU9adI/aTHj8TSWLGUYVUEjMCwKB7Dh/dn4+sJzCfX19OriznMzkHeJY++WWyMj0nWi0aqlbG4wG1EG4yzML2CTcNjCdNz+Hv2YSdy/ft0DufTy8mjTtnYEGVdQ2XiSa8JqjYnENF7WTrfnIB2ao2+CEk7kG1kFR0rtVpG/Nq3k2K3nRojs1DJ0zxcwirGNpwKIdeSN0FM+9Bxl+/d5fQMl/AFslgu/L5c8OQJfDOdTW0FwZXxRnpkrXct+mgwMOWaxtniptvAZuxwjjZyjzXKgIGvKKdRzrecwkVFUl/gU9GNjGmUvnE+e3L6iAgiBS/CinKJNd56Y6sg9iJMerqJDbJhiXdCb0Fo3AibqCm9sHWkXcpUx10gZWB7++Eput0lTdC35IsFqpWDkabWfgymsqjZ8vbNg2U/k+6PmwZHx3VYLoZFYCo8hUYaO/pP3zCqTkUEl7wikdqEyPXhBNnxINL2nHYwj7WGs0zrLwFcWRplZA0X7y+AKjp9kK6STHUMkQaFBehI7oP3QQ08f/3qFTB9qGvX0z6yp78M8wP/2t3Y2knN+0eVgauNTVuRlsnGlOlj7v+KYtgggxrEV43TIJ/578cOXYkrBI+tCyY6T11zMG4jDNdw2rPyqYCBl46DN0fHul13pGacejYiqkhP9in8i6jvZP/803Xn5EfHvC/GBbZDiV59D/LRX5M/59PZ1eLd7GxyNf5jMqJTRLmssYcM4IeYDbm72VcP8j4uvglGL0JwHCxGPyYoZyMRj15z43Zry2RqvWVtnSpj9xtcQxeBg7comrU2vv97F3Qm14aFrJBesNJwnzt/ZqNdZzchhuxvpVqTwfMO1GRZjCIviRf815cv+PMczLKL5e6z7W8v2bDIo/S8uhsVNMLddlPCT0QXXFDhpak4fdtc+GQ74x9RWrKKxQYAAA=="
- }
-SETTINGS
-
-}
+#   # cat ./cicd/vm_setup.sh | gzip -9 | base64 
+#   settings = <<SETTINGS
+#  {
+#   "script": "H4sIAJqc1GYCA5WUa2/bOgyGv/tXcEmxdTiVVOwKFNgBgjXtAnTNsHQHGLYhUCTaEWJLhiSnabEfP1p2km2nu/STaZJ6KVKPNHwgFsaKhQzLLGAEhlk2hA/vTkdXY5iNr64ml+czmJ6BvG08+mq+Nj42spxXUi2NxTluItpgnIXJJawrHnOYnMHH6YetyNWbyQzOJhfjB62ysSHKsoTCxKNOE1RpjiCi9zJ3vjoC7dQKfRYa7UDWkRW0rabWMuKPvq0Uu2nVGJmZajz9hwtYxliHEyHkSvIqiEmXOmrrvb6YnOICvkISS43fVQsePoRflrNNXUBwebyWHlntXY0+GgxMuapyNrtuF7Ap2++jjtxjiTJg4EuqaZTzNad0UZDUV/ictV/GNEpfOZ88qXxEBNEEL8KSaokV3nhjiyB2Ikx6Ook1sj7EW6F/QWhcC9vQUDph60g7l00Zt4lUge3s+5doV+f0g74mX8xQLR0MNI32UzCFRc0WN6/uLfuFdP88NDg4LMNi3geBqfAYKmns4Ke5YVStigiu8YpEShMi1/sdJMe9SNtx2sI80hpOE62PArg8N8rIEs7fnQN1dHIvXSWZahkiDUoL0JLcJe+SKjh++fw5ML3vazvTLrOjPw+zPf/aXdvSSc27S5WAK41tNqJZNDY2iT7m/q8o+gUyqF58WTkN8h//+9x+KnGJ4LF2wUTnaWoORnWE/hhOOlY+Z9Dz0nLw6uBQ16uW1IRTx0ZEFenKPobviPpN9S9/3XcqfnDIu2ZcYFuU6NZ3IB/8N34/m0wv56+np+PL0dvxgHYR5aLEDjKAP2LW127/friQd3HxSzA6EYJjbzF6MUE5G4l49Jobt40tGlPqDavLpjB2t8BVdBDYe+mEqpU2vnt857QpV4e5LJCu8FBpuNOf3rPBdrjrEEMK1FKtyOBpCWqyLEaRQuIpf/LsKT9OySy5WDoAtnnxjPVBHqXnxe0gG5IBt5t1Dn+Rng25oO5zU3B6u+nHN7a1vgE8AC22ywYAAA=="
+#  }
+# SETTINGS
+# }
 
 output "devops_vm_ip" {
   value = azurerm_public_ip.vm_public_ip.ip_address
@@ -71,5 +71,5 @@ resource "azurerm_key_vault_secret" "devops_vm_ip" {
   name         = "devops-vm-ip"
   value        = azurerm_public_ip.vm_public_ip.ip_address
   key_vault_id = azurerm_key_vault.kvt.id
-  depends_on   = [azurerm_private_endpoint.kvt_pe]
+  depends_on   = [azurerm_private_endpoint.kvt_pe, azurerm_role_assignment.keyvault_admin, azuread_group_member.devops_sp_is_owner]
 }
