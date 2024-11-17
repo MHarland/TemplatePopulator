@@ -42,4 +42,4 @@ wget "https://vstsagentpackage.azureedge.net/agent/3.243.0/vsts-agent-linux-x64-
 tar zxvf vsts-agent-linux-x64-3.243.0.tar.gz
 # https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/linux-agent?view=azure-devops
 ./config.sh --acceptTeeEula --unattended --url $1 --auth pat --token $2
-./run.sh
+screen -S agentsession bash ./run.sh

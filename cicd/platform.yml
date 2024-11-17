@@ -1,0 +1,47 @@
+parameters:
+- name: SUBSCRIPTION_ID
+  type: string
+- name: PROJECT_NAME
+  type: string
+- name: ENV_NAME
+  type: string
+  default: "dev"
+- name: TF_VAR_owners_entra_object_ids
+  type: string
+  default: '[]'
+
+stages:
+- stage: main
+  jobs:
+
+  - job: main
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - checkout: self
+      clean: true
+
+    - task: AzureCLI@2
+      displayName: Set up infrastructure
+      inputs:
+        azureSubscription: ${{ variables.service_connection }}
+        scriptType: bash
+        addSpnToEnvironment: true
+        scriptLocation: inlineScript
+        scriptPath: |
+          set -e
+
+          source ~/TemplatePopulator/secrets/config.sh
+          echo "TF_VAR_devops_kvt=${TF_VAR_devops_kvt}"
+          export TENANT_ID=$(az keyvault secret show --name tenant-id --vault-name "${TF_VAR_devops_kvt}" --query "value" -o tsv)
+          export DEVOPS_SP_APP_ID=$(az keyvault secret show --name devops-sp-app-id --vault-name "${TF_VAR_devops_kvt}" --query "value" -o tsv)
+          export DEVOPS_SP_PASSWORD=$(az keyvault secret show --name devops-sp-password --vault-name "${TF_VAR_devops_kvt}" --query "value" -o tsv)
+          export SUBSCRIPTION_ID=$(az keyvault secret show --name subscription-id --vault-name "${TF_VAR_devops_kvt}" --query "value" -o tsv)
+
+          export ARM_CLIENT_ID=$DEVOPS_SP_APP_ID
+          export ARM_CLIENT_SECRET=$DEVOPS_SP_PASSWORD
+          export ARM_TENANT_ID=$TENANT_ID
+          export ARM_SUBSCRIPTION_ID=$SUBSCRIPTION_ID
+
+          cd $(Build.Repository.LocalPath)
+          ./cicd/deploy_infrastructure_platform.sh
